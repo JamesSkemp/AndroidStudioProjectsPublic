@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">XML Testing</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_games">Video Games</string>
+    <string name="title_activity_hardware">Video Game Hardware</string>
+	<string name="view_games">View Games</string>
+	<string name="view_hardware">View Hardware</string>
+
+</resources>
