@@ -2,8 +2,18 @@ package com.jamesrskemp.xmltesting;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.List;
 
 
 public class GamesActivity extends Activity {
@@ -12,6 +22,8 @@ public class GamesActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_games);
+
+		parseData();
 	}
 
 
@@ -35,5 +47,27 @@ public class GamesActivity extends Activity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void parseData() {
+		String jsonFileName = "VideoGames.json";
+		String filePath = Environment.getExternalStorageDirectory() + "/Download/" + jsonFileName;
+		try {
+			File file = new File(filePath);
+			InputStream fis = null;
+			fis = new BufferedInputStream(new FileInputStream(file));
+			GamesJsonParser parser = new GamesJsonParser();
+
+			List<GamesJsonParser.VideoGame> videoGames = parser.readJsonStream(fis);
+
+			ArrayAdapter<GamesJsonParser.VideoGame> gamesAdapter = new GameSelectionListAdapater(this, videoGames);
+
+			ListView listView = (ListView)findViewById(R.id.list_games);
+			listView.setAdapter(gamesAdapter);
+
+
+		} catch (Exception ex) {
+			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+		}
 	}
 }
