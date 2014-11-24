@@ -32,6 +32,16 @@ public class GameSelectionListAdapter extends ArrayAdapter<VideoGame> {
 		TextView system = (TextView) convertView.findViewById(R.id.list_game_selection_system);
 		system.setText(item.system);
 
+		title.append(" (Own: " + item.own + ")");
+
+		TextView purchase = (TextView) convertView.findViewById(R.id.list_game_selection_purchase);
+		purchase.setText(item.purchaseDate + " " + item.purchasePrice + " " + item.purchasePlace);
+
+		TextView notes = (TextView) convertView.findViewById(R.id.list_game_selection_notes);
+		notes.setText(item.notes);
+
+
+
 		return convertView;
 	}
 }
