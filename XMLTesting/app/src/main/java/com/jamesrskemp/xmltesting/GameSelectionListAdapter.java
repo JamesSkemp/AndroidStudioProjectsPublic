@@ -12,14 +12,14 @@ import java.util.List;
 /**
  * Created by James on 11/24/2014.
  */
-public class GameSelectionListAdapater extends ArrayAdapter<GamesJsonParser.VideoGame> {
-	public GameSelectionListAdapater(Context context, List<GamesJsonParser.VideoGame> viewModel) {
+public class GameSelectionListAdapter extends ArrayAdapter<VideoGame> {
+	public GameSelectionListAdapter(Context context, List<VideoGame> viewModel) {
 		super(context, 0, viewModel);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		GamesJsonParser.VideoGame item = getItem(position);
+		VideoGame item = getItem(position);
 
 		// Check if an existing view is being reused, otherwise inflate the view.
 		if (convertView == null) {

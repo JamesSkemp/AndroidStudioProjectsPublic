@@ -13,6 +13,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -58,9 +59,12 @@ public class GamesActivity extends Activity {
 			fis = new BufferedInputStream(new FileInputStream(file));
 			GamesJsonParser parser = new GamesJsonParser();
 
-			List<GamesJsonParser.VideoGame> videoGames = parser.readJsonStream(fis);
+			List<VideoGame> videoGames = parser.readJsonStream(fis);
+			VideoGameComparer comparer = new VideoGameComparer();
 
-			ArrayAdapter<GamesJsonParser.VideoGame> gamesAdapter = new GameSelectionListAdapater(this, videoGames);
+			Collections.sort(videoGames, comparer);
+
+			ArrayAdapter<VideoGame> gamesAdapter = new GameSelectionListAdapter(this, videoGames);
 
 			ListView listView = (ListView)findViewById(R.id.list_games);
 			listView.setAdapter(gamesAdapter);
