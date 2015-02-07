@@ -15,15 +15,21 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		int gridSize = 15;
+
 		GridLayout mainGrid = (GridLayout)findViewById(R.id.main_grid);
-		for (int col = 0; col < 5; col++) {
-			for (int row = 0; row < 5; row++) {
+		mainGrid.setColumnCount(gridSize);
+		mainGrid.setRowCount(gridSize);
+
+		for (int col = 0; col < gridSize; col++) {
+			for (int row = 0; row < gridSize; row++) {
 				Button button = new Button(this);
 				button.setText(String.format("%1$s %2$s", col, row));
 
 				GridLayout.LayoutParams gridLayoutParams = new GridLayout.LayoutParams();
 				gridLayoutParams.columnSpec = GridLayout.spec(col, 1);
 				gridLayoutParams.rowSpec = GridLayout.spec(row, 1);
+				gridLayoutParams.setMargins(0, 0, 0, 0);
 				mainGrid.addView(button, gridLayoutParams);
 			}
 		}
