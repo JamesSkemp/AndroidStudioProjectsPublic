@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 
-public class AirHockyActivity extends ActionBarActivity {
+public class AirHockeyActivity extends ActionBarActivity {
 
 	private GLSurfaceView glSurfaceView;
 	private boolean rendererSet = false;

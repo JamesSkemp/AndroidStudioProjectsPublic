@@ -17,8 +17,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AirHockyActivity"
-            android:label="@string/title_activity_air_hocky" >
+            android:name=".AirHockeyActivity"
+            android:label="@string/title_activity_air_hockey" >
         </activity>
     </application>
 

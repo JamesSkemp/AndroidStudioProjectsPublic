@@ -68,7 +68,7 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// Red, Green, Blue, alpha
-		glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+		glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
 	}
 
 	@Override

@@ -2,12 +2,17 @@ package com.jamesrskemp.firstopenglproject;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -35,6 +40,19 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(this, "This device does not support OpenGL ES 2.0.", Toast.LENGTH_SHORT).show();
 		}
 		setContentView(glSurfaceView);
+
+		Button b = new Button(this);
+		b.setText("Hello World");
+		b.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(), AirHockeyActivity.class);
+				startActivity(intent);
+			}
+		});
+		this.addContentView(b,
+				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
 	}
 
 	@Override
@@ -73,5 +91,10 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void viewAirHockey(View view) {
+		Intent intent = new Intent(this, AirHockeyActivity.class);
+		startActivity(intent);
 	}
 }
