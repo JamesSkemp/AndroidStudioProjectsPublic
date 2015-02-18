@@ -3,11 +3,13 @@ package com.jamesrskemp.firstopenglproject;
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glViewport;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
+import com.jamesrskemp.firstopenglproject.util.LoggerConfig;
 import com.jamesrskemp.firstopenglproject.util.ShaderHelper;
 import com.jamesrskemp.firstopenglproject.util.TextResourceReader;
 
@@ -88,6 +90,15 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 		int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
 
 		program = ShaderHelper.linkProgram(vertexShader, fragmentShader);
+
+		if (LoggerConfig.ON) {
+			// Will validate the program.
+			// If the if statement changes, update the method to check the LoggerConfig.ON status.
+			ShaderHelper.validateProgram(program);
+		}
+
+		// Use the program when drawing to the screen.
+		glUseProgram(program);
 	}
 
 	@Override
