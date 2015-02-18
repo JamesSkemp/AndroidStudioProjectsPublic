@@ -5,7 +5,11 @@ import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
 import static android.opengl.GLES20.glViewport;
 
+import android.content.Context;
 import android.opengl.GLSurfaceView;
+
+import com.jamesrskemp.firstopenglproject.util.ShaderHelper;
+import com.jamesrskemp.firstopenglproject.util.TextResourceReader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -26,7 +30,14 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 	// Will store data in native memory.
 	private final FloatBuffer vertexData;
 
-	public AirHockeyRenderer() {
+	private final Context context;
+
+	// Store the linked program (shaders).
+	private int program;
+
+	public AirHockeyRenderer(Context context) {
+		this.context = context;
+
 		// Rectangle that's 9x14.
 		float[] tableVertices = {
 				0f, 0f,
@@ -69,6 +80,14 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// Red, Green, Blue, alpha
 		glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
+
+		String vertexShaderSource = TextResourceReader.readTextFileFromResource(context, R.raw.simple_vertex_shader);
+		String fragmentShaderSource = TextResourceReader.readTextFileFromResource(context, R.raw.simple_fragment_shader);
+
+		int vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource);
+		int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
+
+		program = ShaderHelper.linkProgram(vertexShader, fragmentShader);
 	}
 
 	@Override
