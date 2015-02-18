@@ -1,9 +1,20 @@
 package com.jamesrskemp.firstopenglproject;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
+import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_LINES;
+import static android.opengl.GLES20.GL_POINTS;
+import static android.opengl.GLES20.GL_TRIANGLES;
 import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glDrawArrays;
+import static android.opengl.GLES20.glEnableVertexAttribArray;
+import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glUniform1f;
+import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
 
 import android.content.Context;
@@ -36,6 +47,14 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 
 	// Store the linked program (shaders).
 	private int program;
+
+	// Fragment uniform variable name.
+	private static final String U_COLOR = "u_Color";
+	// Uniform's location in a particular program.
+	private int uColorLocation;
+
+	private static final String A_POSITION = "a_Position";
+	private int aPositionLocation;
 
 	public AirHockeyRenderer(Context context) {
 		this.context = context;
@@ -99,6 +118,18 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 
 		// Use the program when drawing to the screen.
 		glUseProgram(program);
+		// Get the color location so we can update it later.
+		uColorLocation = glGetUniformLocation(program, U_COLOR);
+		// Store the location of the position attribute.
+		// We could set this if we wanted to, otherwise it's automatically handled.
+		aPositionLocation = glGetAttribLocation(program, A_POSITION);
+
+		// Position our buffer pointer at the beginning of the data.
+		vertexData.position(0);
+		// Find the data in the vertextData buffer.
+		glVertexAttribPointer(aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, 0, vertexData);
+		// Data is linked to the attribute, so now we enable it.
+		glEnableVertexAttribArray(aPositionLocation);
 	}
 
 	@Override
@@ -111,5 +142,22 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 	public void onDrawFrame(GL10 gl) {
 		// Clear the rendering surface.
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Uniforms don't have defaults, so start with a white table.
+		glUniform4f(uColorLocation, 1.0f, 1.0f, 1.0f, 1.0f);
+		// Draw triangles, starting at the beginning, and read in six vertices (2 sets of 3, which means 2 triangles).
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		// Red
+		glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+		// Draw a line, with two vertices, six in.
+		glDrawArrays(GL_LINES, 6, 2);
+
+		// Blue mallet
+		glUniform4f(uColorLocation, 0.0f, 0.0f, 1.0f, 1.0f);
+		glDrawArrays(GL_POINTS, 8, 1);
+		// Red mallet
+		glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+		glDrawArrays(GL_POINTS, 9, 1);
 	}
 }
