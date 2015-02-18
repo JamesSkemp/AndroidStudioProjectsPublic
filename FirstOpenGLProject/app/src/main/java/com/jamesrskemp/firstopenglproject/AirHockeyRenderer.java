@@ -11,7 +11,6 @@ import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glUniform1f;
 import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
@@ -70,22 +69,22 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 		float[] tableVerticesWithTriangles = {
 				// Define in counter-clockwise order (winding order)
 				// Triangle 1
-				0f, 0f,
-				9f, 14f,
-				0f, 14f,
+				-0.5f, -0.5f,
+				0.5f, 0.5f,
+				-0.5f, 0.5f,
 
 				// Triangle 2
-				0f, 0f,
-				9f, 0f,
-				9f, 14f,
+				-0.5f, -0.5f,
+				0.5f, -0.5f,
+				0.5f, 0.5f,
 
 				// Line 1 (center line)
-				0f, 7f,
-				9f, 7f,
+				-0.5f, 0f,
+				0.5f, 0f,
 
 				// Mallets
-				4.5f, 2f,
-				4.5f, 12f
+				0f, -0.25f,
+				0f, 0.25f
 		};
 
 		vertexData = ByteBuffer
