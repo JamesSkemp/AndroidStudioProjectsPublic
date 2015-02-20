@@ -92,7 +92,7 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 				.allocateDirect(tableVerticesWithTriangles.length * BYTES_PER_FLOAT)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
-		// copy data from Dalvik's memory to navtive memory
+		// copy data from Dalvik's memory to native memory
 		vertexData.put(tableVerticesWithTriangles);
 	}
 
