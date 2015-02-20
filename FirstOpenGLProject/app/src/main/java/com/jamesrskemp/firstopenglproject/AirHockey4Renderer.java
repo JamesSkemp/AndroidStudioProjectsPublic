@@ -32,6 +32,7 @@ import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.orthoM;
+import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.setIdentityM;
 import static android.opengl.Matrix.translateM;
 
@@ -159,8 +160,10 @@ public class AirHockey4Renderer implements GLSurfaceView.Renderer {
 		MatrixHelper.perspectiveM(projectionMatrix, 45, (float) width / (float) height, 1f, 10f);
 		// Set the matrix to an identity matrix.
 		setIdentityM(modelMatrix, 0);
-		// Move our table -2 along the z-axis.
-		translateM(modelMatrix, 0, 0f, 0f, -2f);
+		// Move our table -2.5 along the z-axis (back).
+		translateM(modelMatrix, 0, 0f, 0f, -2.5f);
+		// Rotate our table -60 degrees along the x-axis (move the top back).
+		rotateM(modelMatrix, 0, -60f, 1f, 0f, 0f);
 
 		// Temporary matrix to put the result into.
 		final float[] temp = new float[16];
