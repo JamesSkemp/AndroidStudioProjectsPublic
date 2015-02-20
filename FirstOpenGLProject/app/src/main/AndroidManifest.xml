@@ -40,6 +40,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jamesrskemp.firstopenglproject.MainActivity" />
         </activity>
+        <activity
+            android:name=".AirHockey4Activity"
+            android:label="@string/title_activity_air_hockey4"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jamesrskemp.firstopenglproject.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

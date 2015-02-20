@@ -1,10 +1,10 @@
 package com.jamesrskemp.firstopenglproject;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 
 import com.jamesrskemp.firstopenglproject.util.LoggerConfig;
+import com.jamesrskemp.firstopenglproject.util.MatrixHelper;
 import com.jamesrskemp.firstopenglproject.util.ShaderHelper;
 import com.jamesrskemp.firstopenglproject.util.TextResourceReader;
 
@@ -26,17 +26,22 @@ import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glUniform4fv;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
+import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.orthoM;
+import static android.opengl.Matrix.setIdentityM;
+import static android.opengl.Matrix.translateM;
 
 /**
  * Created by James on 2/19/2015.
  */
-public class AirHockey3Renderer implements GLSurfaceView.Renderer {
+public class AirHockey4Renderer implements GLSurfaceView.Renderer {
+	// Translation matrix to move the table.
+	private final float[] modelMatrix = new float[16];
+
 	// Two components per vertex (X, Y).
 	private static final int POSITION_COMPONENT_COUNT = 2;
 	// Three components per color (R, G, B).
@@ -68,7 +73,7 @@ public class AirHockey3Renderer implements GLSurfaceView.Renderer {
 	// Location of the matrix.
 	private int uMatrixLocation;
 
-	public AirHockey3Renderer(Context context) {
+	public AirHockey4Renderer(Context context) {
 		this.context = context;
 
 		float[] tableVerticesWithTriangles = {
@@ -133,7 +138,7 @@ public class AirHockey3Renderer implements GLSurfaceView.Renderer {
 
 		// Position our buffer pointer at the beginning of the data.
 		vertexData.position(0);
-		// Find the data in the vertextData buffer.
+		// Find the data in the vertexData buffer.
 		glVertexAttribPointer(aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, vertexData);
 		// Data is linked to the attribute, so now we enable it.
 		glEnableVertexAttribArray(aPositionLocation);
@@ -151,17 +156,18 @@ public class AirHockey3Renderer implements GLSurfaceView.Renderer {
 		// Set the viewport to fill the entire surface.
 		glViewport(0, 0, width, height);
 
-		final float aspectRatio = width > height ?
-				(float)width / (float)height :
-				(float)height / (float)width;
+		MatrixHelper.perspectiveM(projectionMatrix, 45, (float) width / (float) height, 1f, 10f);
+		// Set the matrix to an identity matrix.
+		setIdentityM(modelMatrix, 0);
+		// Move our table -2 along the z-axis.
+		translateM(modelMatrix, 0, 0f, 0f, -2f);
 
-		if (width > height) {
-			// Landscape, so expand the width to the aspect ratio.
-			orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
-		} else {
-			// Portrait, so expand the height to the aspect ratio.
-			orthoM(projectionMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
-		}
+		// Temporary matrix to put the result into.
+		final float[] temp = new float[16];
+		// Multiply the projection and model matrices. Results go into temp.
+		multiplyMM(temp, 0, projectionMatrix, 0, modelMatrix, 0);
+		// Put the results back into the projection matrix.
+		System.arraycopy(temp, 0, projectionMatrix, 0, temp.length);
 	}
 
 	@Override
