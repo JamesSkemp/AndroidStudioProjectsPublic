@@ -2,22 +2,16 @@ package com.jamesrskemp.firstopenglproject;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class AirHockey2Activity extends ActionBarActivity {
 
 	private GLSurfaceView glSurfaceView;
 	private boolean rendererSet = false;
@@ -35,40 +29,12 @@ public class MainActivity extends ActionBarActivity {
 			// Request a 2.0 compatible context.
 			glSurfaceView.setEGLContextClientVersion(2);
 			// Assign the renderer.
-			glSurfaceView.setRenderer(new FirstOpenGLProjectRenderer());
+			glSurfaceView.setRenderer(new AirHockeyRenderer(this));
 			rendererSet = true;
 		} else {
 			Toast.makeText(this, "This device does not support OpenGL ES 2.0.", Toast.LENGTH_SHORT).show();
 		}
 		setContentView(glSurfaceView);
-
-		LinearLayout linearLayout = new LinearLayout(this);
-
-		Button b = new Button(this);
-		b.setText("Air Hockey 1");
-		b.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(getApplicationContext(), AirHockeyActivity.class);
-				startActivity(intent);
-			}
-		});
-		linearLayout.addView(b,
-				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-		Button b2 = new Button(this);
-		b2.setText("Air Hockey 2");
-		b2.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(getApplicationContext(), AirHockey2Activity.class);
-				startActivity(intent);
-			}
-		});
-		linearLayout.addView(b2,
-				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-		this.addContentView(linearLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
 	@Override
@@ -90,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_main, menu);
+		getMenuInflater().inflate(R.menu.menu_air_hockey2, menu);
 		return true;
 	}
 
@@ -107,10 +73,5 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
-
-	public void viewAirHockey(View view) {
-		Intent intent = new Intent(this, AirHockeyActivity.class);
-		startActivity(intent);
 	}
 }

@@ -5,5 +5,6 @@
 
 	<string name="main_button_text">Air Hockey</string>
 	<string name="action_settings">Settings</string>
-	<string name="title_activity_air_hockey">Air Hockey</string>
+	<string name="title_activity_air_hockey">Air Hockey 1</string>
+	<string name="title_activity_air_hockey2">Air Hockey 2</string>
 </resources>
