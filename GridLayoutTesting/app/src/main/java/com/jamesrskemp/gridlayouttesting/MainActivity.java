@@ -30,6 +30,7 @@ public class MainActivity extends ActionBarActivity {
 				gridLayoutParams.columnSpec = GridLayout.spec(col, 1);
 				gridLayoutParams.rowSpec = GridLayout.spec(row, 1);
 				gridLayoutParams.setMargins(0, 0, 0, 0);
+
 				mainGrid.addView(button, gridLayoutParams);
 			}
 		}
