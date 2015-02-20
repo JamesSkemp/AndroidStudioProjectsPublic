@@ -20,13 +20,21 @@
             android:name=".AirHockeyActivity"
             android:label="@string/title_activity_air_hockey"
             android:parentActivityName=".MainActivity" >
-	        <meta-data
-		        android:name="android.support.PARENT_ACTIVITY"
-		        android:value="com.jamesrskemp.firstopenglproject.MainActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jamesrskemp.firstopenglproject.MainActivity" />
         </activity>
         <activity
             android:name=".AirHockey2Activity"
             android:label="@string/title_activity_air_hockey2"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jamesrskemp.firstopenglproject.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AirHockey3Activity"
+            android:label="@string/title_activity_air_hockey3"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
