@@ -116,6 +116,7 @@ public class ShaderHelper {
 		program = linkProgram(vertexShader, fragmentShader);
 
 		if (LoggerConfig.ON) {
+			// Only validate the program when debugging.
 			validateProgram(program);
 		}
 
