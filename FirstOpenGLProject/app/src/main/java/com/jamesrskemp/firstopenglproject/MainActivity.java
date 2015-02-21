@@ -45,16 +45,16 @@ public class MainActivity extends ActionBarActivity {
 		LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-		Button b = new Button(this);
-		b.setText(R.string.title_activity_air_hockey);
-		b.setOnClickListener(new Button.OnClickListener() {
+		Button b1 = new Button(this);
+		b1.setText(R.string.title_activity_air_hockey);
+		b1.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(getApplicationContext(), AirHockeyActivity.class);
 				startActivity(intent);
 			}
 		});
-		linearLayout.addView(b,
+		linearLayout.addView(b1,
 				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 		Button b2 = new Button(this);
@@ -103,6 +103,18 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 		linearLayout.addView(b5,
+				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		Button b6 = new Button(this);
+		b6.setText(R.string.title_activity_air_hockey6);
+		b6.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(), AirHockey6Activity.class);
+				startActivity(intent);
+			}
+		});
+		linearLayout.addView(b6,
 				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 		this.addContentView(linearLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
