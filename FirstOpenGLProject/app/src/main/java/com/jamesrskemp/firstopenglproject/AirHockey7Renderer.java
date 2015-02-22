@@ -94,10 +94,8 @@ public class AirHockey7Renderer implements GLSurfaceView.Renderer {
 		// Clear the rendering surface.
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// Crazy town!
-		long time = android.os.SystemClock.uptimeMillis() % 40000L;
-		float angle = 0.001f * ((int) time);
-		rotateM(viewMatrix, 0, angle, 0f, 1.2f, 0f);
+		// Rotate around the center of the table.
+		rotateM(viewMatrix, 0, 1f, 0f, 1.2f, 0f);
 
 		// Cache the results of projectionMatrix * viewMatrix.
 		multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
