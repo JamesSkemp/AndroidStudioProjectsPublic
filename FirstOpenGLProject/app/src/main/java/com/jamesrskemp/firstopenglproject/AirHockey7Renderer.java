@@ -37,9 +37,9 @@ public class AirHockey7Renderer implements GLSurfaceView.Renderer {
 	// Place our objects in the scene.
 	private final float[] modelViewProjectionMatrix = new float[16];
 
-	// Hold our 4x4 matrix data.
+	// Hold our 4x4 matrix data of where objects are in space (x, y, z, w).
 	private final float[] projectionMatrix = new float[16];
-	// Translation matrix to move the table.
+	// Translation matrix to move an object.
 	private final float[] modelMatrix = new float[16];
 
 	private Table table;
@@ -93,6 +93,11 @@ public class AirHockey7Renderer implements GLSurfaceView.Renderer {
 	public void onDrawFrame(GL10 gl) {
 		// Clear the rendering surface.
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Crazy town!
+		long time = android.os.SystemClock.uptimeMillis() % 40000L;
+		float angle = 0.001f * ((int) time);
+		rotateM(viewMatrix, 0, angle, 0f, 1.2f, 0f);
 
 		// Cache the results of projectionMatrix * viewMatrix.
 		multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
