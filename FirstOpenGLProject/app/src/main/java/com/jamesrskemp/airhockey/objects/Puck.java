@@ -1,7 +1,7 @@
 package com.jamesrskemp.airhockey.objects;
 
 import com.jamesrskemp.airhockey.data.VertexArray;
-import com.jamesrskemp.airhockey.programs.ColorShaderProgram;
+import com.jamesrskemp.airhockey.programs.UniformColorShaderProgram;
 import com.jamesrskemp.firstopenglproject.util.Geometry;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class Puck {
 		drawList = generatedData.drawList;
 	}
 
-	public void bindData(ColorShaderProgram colorProgram) {
+	public void bindData(UniformColorShaderProgram colorProgram) {
 		vertexArray.setVertexAttribPointer(0, colorProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, 0);
 	}
 
