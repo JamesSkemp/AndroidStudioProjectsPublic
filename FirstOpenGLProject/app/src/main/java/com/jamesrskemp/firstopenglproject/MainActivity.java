@@ -117,6 +117,18 @@ public class MainActivity extends ActionBarActivity {
 		linearLayout.addView(b6,
 				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
+		Button b7 = new Button(this);
+		b7.setText(R.string.title_activity_air_hockey7);
+		b7.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(), AirHockey7Activity.class);
+				startActivity(intent);
+			}
+		});
+		linearLayout.addView(b7,
+				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
 		this.addContentView(linearLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
