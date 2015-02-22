@@ -3,10 +3,12 @@ package com.jamesrskemp.firstopenglproject;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
-import com.jamesrskemp.airhockey.objects.Mallet;
+import com.jamesrskemp.airhockey.objects.Mallet3D;
 import com.jamesrskemp.airhockey.objects.Table;
+import com.jamesrskemp.airhockey.objects.Puck;
 import com.jamesrskemp.airhockey.programs.ColorShaderProgram;
 import com.jamesrskemp.airhockey.programs.TextureShaderProgram;
+import com.jamesrskemp.airhockey.programs.UniformColorShaderProgram;
 import com.jamesrskemp.firstopenglproject.util.MatrixHelper;
 import com.jamesrskemp.firstopenglproject.util.TextureHelper;
 
@@ -33,10 +35,11 @@ public class AirHockey7Renderer implements GLSurfaceView.Renderer {
 	private final float[] modelMatrix = new float[16];
 
 	private Table table;
-	private Mallet mallet;
+	private Mallet3D mallet;
+	private Puck puck;
 
 	private TextureShaderProgram textureProgram;
-	private ColorShaderProgram colorProgram;
+	private UniformColorShaderProgram colorProgram;
 
 	private int texture;
 
@@ -50,10 +53,11 @@ public class AirHockey7Renderer implements GLSurfaceView.Renderer {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		table = new Table();
-		mallet = new Mallet();
+		mallet = new Mallet3D(0.08f, 0.15f, 32);
+		puck = new Puck(0.06f, 0.02f, 32);
 
 		textureProgram = new TextureShaderProgram(context);
-		colorProgram = new ColorShaderProgram(context);
+		colorProgram = new UniformColorShaderProgram(context);
 
 		texture = TextureHelper.loadTexture(context, R.drawable.air_hockey_surface);
 	}
@@ -92,7 +96,7 @@ public class AirHockey7Renderer implements GLSurfaceView.Renderer {
 
 		// Draw the mallets.
 		colorProgram.useProgram();
-		colorProgram.setUniforms(projectionMatrix);
+		colorProgram.setUniforms(projectionMatrix, 0f, 0f, 1f);
 		mallet.bindData(colorProgram);
 		mallet.draw();
 	}
