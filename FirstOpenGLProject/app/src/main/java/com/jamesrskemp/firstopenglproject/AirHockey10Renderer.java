@@ -149,10 +149,12 @@ public class AirHockey10Renderer implements GLSurfaceView.Renderer {
 		if (puckPosition.x < leftBound + puck.radius
 				|| puckPosition.x > rightBound - puck.radius) {
 			puckVector = new Geometry.Vector(-puckVector.x, puckVector.y, puckVector.z);
+			puckVector = puckVector.scale(0.9f);
 		}
 		if (puckPosition.z < farBound + puck.radius
 				|| puckPosition.z > nearBound - puck.radius) {
 			puckVector = new Geometry.Vector(puckVector.x, puckVector.y, -puckVector.z);
+			puckVector = puckVector.scale(0.9f);
 		}
 		// Clamp the puck position.
 		puckPosition = new Geometry.Point(
@@ -166,6 +168,8 @@ public class AirHockey10Renderer implements GLSurfaceView.Renderer {
 		colorProgram.setUniforms(modelViewProjectionMatrix, 0.8f, 0.8f, 1f);
 		puck.bindData(colorProgram);
 		puck.draw();
+		// Slow the puck down a little bit.
+		puckVector = puckVector.scale(0.99f);
 	}
 
 	private void positionTableInScene() {
