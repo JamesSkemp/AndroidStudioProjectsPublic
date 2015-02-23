@@ -54,6 +54,10 @@ public class AirHockey9Renderer implements GLSurfaceView.Renderer {
 
 	private boolean malletPressed = false;
 	private Geometry.Point blueMalletPosition;
+	private Geometry.Point previousBlueMalletPosition;
+
+	private Geometry.Point puckPosition;
+	private Geometry.Vector puckVector;
 
 	// Create the bounds of our table.
 	private final float leftBound = -0.5f;
@@ -81,6 +85,9 @@ public class AirHockey9Renderer implements GLSurfaceView.Renderer {
 
 		// Initialize the position of the player's mallet.
 		blueMalletPosition = new Geometry.Point(0f, mallet.height / 2f, 0.4f);
+
+		puckPosition = new Geometry.Point(0f, puck.height / 2f, 0f);
+		puckVector = new Geometry.Vector(0f, 0f, 0f);
 
 		textureProgram = new TextureShaderProgram(context);
 		colorProgram = new UniformColorShaderProgram(context);
@@ -137,8 +144,11 @@ public class AirHockey9Renderer implements GLSurfaceView.Renderer {
 		colorProgram.setUniforms(modelViewProjectionMatrix, 0f, 0f, 1f);
 		mallet.draw();
 
+		// Determine if the puck has moved.
+		puckPosition = puckPosition.translate(puckVector);
+
 		// Draw the puck.
-		positionObjectInScene(0f, puck.height / 2f, 0f);
+		positionObjectInScene(puckPosition.x, puckPosition.y, puckPosition.z);
 		colorProgram.setUniforms(modelViewProjectionMatrix, 0.8f, 0.8f, 1f);
 		puck.bindData(colorProgram);
 		puck.draw();
@@ -176,6 +186,8 @@ public class AirHockey9Renderer implements GLSurfaceView.Renderer {
 			Geometry.Plane plane = new Geometry.Plane(new Geometry.Point(0, 0, 0), new Geometry.Vector(0, 1, 0));
 			// Find where the touched point intersects the plane. Move the object along this plane.
 			Geometry.Point touchedPoint = Geometry.intersectionPoint(ray, plane);
+			// Keep track of where the mallet was before.
+			previousBlueMalletPosition = blueMalletPosition;
 			// Move the player mallet to that spot.
 			blueMalletPosition = new Geometry.Point(
 					clamp(touchedPoint.x, leftBound + mallet.radius, rightBound - mallet.radius),
@@ -183,6 +195,12 @@ public class AirHockey9Renderer implements GLSurfaceView.Renderer {
 					// 0f because we don't want it to cross the center line.
 					clamp(touchedPoint.z, 0f + mallet.radius, nearBound - mallet.radius)
 			);
+
+			float distance = Geometry.vectorBetween(blueMalletPosition, puckPosition).length();
+			// If the distance between the mallet and puck is less the space they both take up, kaboom.
+			if (distance < (puck.radius + mallet.radius)) {
+				puckVector = Geometry.vectorBetween(previousBlueMalletPosition, blueMalletPosition);
+			}
 		}
 	}
 
