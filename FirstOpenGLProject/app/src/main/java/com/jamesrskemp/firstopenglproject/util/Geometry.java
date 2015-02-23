@@ -39,6 +39,30 @@ public class Geometry {
 	}
 
 	/**
+	 * Plane in 3D space.
+	 */
+	public static class Plane{
+		/**
+		 * Point on the plane.
+		 */
+		public final Point point;
+		/**
+		 * Vector perpendicular to the plane.
+		 */
+		public final Vector normal;
+
+		/**
+		 * Creates a Plane.
+		 * @param point Point on the plane.
+		 * @param normal Vector perpendicular to the plane.
+		 */
+		public Plane(Point point, Vector normal) {
+			this.point = point;
+			this.normal = normal;
+		}
+	}
+
+	/**
 	 * Point in 3D space.
 	 */
 	public static class Point {
@@ -126,6 +150,23 @@ public class Geometry {
 					(x * other.y) - (y * other.x)
 			);
 		}
+
+		/**
+		 * Gets the dot product between two vectors.
+		 * @param other Vector to perform the dot product with.
+		 * @return Dot product.
+		 */
+		public float dotProduct(Vector other) {
+			return x * other.x + y * other.y + z * other.z;
+		}
+
+		public Vector scale(float f) {
+			return new Vector(
+					x * f,
+					y * f,
+					z * f
+			);
+		}
 	}
 
 	/**
@@ -136,6 +177,17 @@ public class Geometry {
 	 */
 	public static boolean intersects(Sphere sphere, Ray ray) {
 		return distanceBetween(sphere.center, ray) < sphere.radius;
+	}
+
+	public static Point intersectionPoint(Ray ray, Plane plane) {
+		Vector rayToPlaneVector = vectorBetween(ray.point, plane.point);
+
+		// Determine how much to scale the Vector so it will intersect the Plane.
+		float scaleFactor = rayToPlaneVector.dotProduct(plane.normal) / ray.vector.dotProduct(plane.normal);
+
+		Point intersectionPoint = ray.point.translate(ray.vector.scale(scaleFactor));
+
+		return intersectionPoint;
 	}
 
 	/**
