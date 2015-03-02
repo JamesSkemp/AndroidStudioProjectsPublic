@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -16,7 +17,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	FPSLogger fpsLogger;
 	OrthographicCamera camera;
 	Texture background;
-	TextureRegion bgRegion;
+	Sprite backgroundSprite;
 
 	@Override
 	public void create () {
@@ -25,7 +26,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		background = new Texture("background.png");
-		bgRegion = new TextureRegion(background, 800, 480);
+		backgroundSprite = new Sprite(background);
+		backgroundSprite.setPosition(0, 0);
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(bgRegion, 0, 0);
+		backgroundSprite.draw(batch);
 		batch.end();
 	}
 }
