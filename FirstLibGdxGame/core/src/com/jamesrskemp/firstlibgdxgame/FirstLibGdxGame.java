@@ -46,6 +46,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 				new TextureRegion(new Texture("planeRed2.png"))
 				);
 		plane.setPlayMode(Animation.PlayMode.LOOP);
+
 		resetScene();
 	}
 
@@ -70,6 +71,17 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		planeAnimTime += deltaTime;
 		planeVelocity.add(gravity);
 		planePosition.mulAdd(planeVelocity, deltaTime);
+
+		terrainOffset -= planePosition.x - planeDefaultPosition.x;
+		// Keep the plane in the same place on the x-axis.
+		planePosition.x = planeDefaultPosition.x;
+		if (terrainOffset * -1 > terrainBelow.getRegionWidth()) {
+			terrainOffset = 0;
+		}
+
+		if (terrainOffset > 0) {
+			terrainOffset = -terrainBelow.getRegionWidth();
+		}
 	}
 
 	public void drawScene() {
@@ -94,7 +106,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	public void resetScene() {
 		terrainOffset = 0;
 		planeAnimTime = 0;
-		planeVelocity.set(100, 60);
+		planeVelocity.set(200, 60);
 		gravity.set(0, -2);
 		// Plane itself is 88x73.
 		planeDefaultPosition.set(400-88/2, 240-73/2);
