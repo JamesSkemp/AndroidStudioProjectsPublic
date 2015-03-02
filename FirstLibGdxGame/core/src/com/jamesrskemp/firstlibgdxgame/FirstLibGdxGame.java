@@ -17,7 +17,9 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	FPSLogger fpsLogger;
 	OrthographicCamera camera;
 	Texture background;
-	Sprite backgroundSprite;
+	TextureRegion terrainBelow;
+	TextureRegion terrainAbove;
+	float terrainOffset;
 
 	@Override
 	public void create () {
@@ -26,8 +28,10 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		background = new Texture("background.png");
-		backgroundSprite = new Sprite(background);
-		backgroundSprite.setPosition(0, 0);
+		terrainBelow = new TextureRegion(new Texture("groundGrass.png"));
+		terrainAbove = new TextureRegion(terrainBelow);
+		terrainAbove.flip(true, true);
+		terrainOffset = 0;
 	}
 
 	@Override
@@ -45,13 +49,24 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	}
 
 	public void updateScene() {
+		float deltaTime = Gdx.graphics.getDeltaTime();
+		terrainOffset -= 200 * deltaTime;
 	}
 
 	public void drawScene() {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		backgroundSprite.draw(batch);
+		// The background is not on top of anything else, so disable blending temporarily.
+		batch.disableBlending();
+		batch.draw(background, 0, 0);
+		// Re-enable blending as our next items will have some transparency.
+		batch.enableBlending();
+		// Draw our ceiling and ground.
+		batch.draw(terrainBelow, terrainOffset, 0);
+		batch.draw(terrainBelow, terrainOffset + terrainBelow.getRegionWidth(), 0);
+		batch.draw(terrainAbove, terrainOffset, 480 - terrainAbove.getRegionHeight());
+		batch.draw(terrainAbove, terrainOffset + terrainAbove.getRegionWidth(), 480 - terrainAbove.getRegionHeight());
 		batch.end();
 	}
 }
