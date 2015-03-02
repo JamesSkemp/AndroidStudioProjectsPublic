@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +21,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	TextureRegion terrainBelow;
 	TextureRegion terrainAbove;
 	float terrainOffset;
+	Animation plane;
+	float planeAnimTime;
 
 	@Override
 	public void create () {
@@ -32,6 +35,14 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		terrainAbove = new TextureRegion(terrainBelow);
 		terrainAbove.flip(true, true);
 		terrainOffset = 0;
+		plane = new Animation(0.05f,
+				new TextureRegion(new Texture("planeRed1.png")),
+				new TextureRegion(new Texture("planeRed2.png")),
+				new TextureRegion(new Texture("planeRed3.png")),
+				new TextureRegion(new Texture("planeRed2.png"))
+				);
+		plane.setPlayMode(Animation.PlayMode.LOOP);
+		planeAnimTime = 0;
 	}
 
 	@Override
@@ -49,8 +60,10 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	}
 
 	public void updateScene() {
+		// deltaTime will be 1/fps
 		float deltaTime = Gdx.graphics.getDeltaTime();
-		terrainOffset -= 200 * deltaTime;
+		//terrainOffset -= 200 * deltaTime;
+		planeAnimTime += deltaTime;
 	}
 
 	public void drawScene() {
@@ -67,6 +80,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		batch.draw(terrainBelow, terrainOffset + terrainBelow.getRegionWidth(), 0);
 		batch.draw(terrainAbove, terrainOffset, 480 - terrainAbove.getRegionHeight());
 		batch.draw(terrainAbove, terrainOffset + terrainAbove.getRegionWidth(), 480 - terrainAbove.getRegionHeight());
+		// Draw our plane.
+		batch.draw(plane.getKeyFrame(planeAnimTime), 350, 200);
 		batch.end();
 	}
 }
