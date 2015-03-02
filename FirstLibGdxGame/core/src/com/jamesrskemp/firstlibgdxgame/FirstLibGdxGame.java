@@ -9,13 +9,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class FirstLibGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	FPSLogger fpsLogger;
 	OrthographicCamera camera;
 	Texture background;
-	
+	TextureRegion bgRegion;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -23,6 +25,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		background = new Texture("background.png");
+		bgRegion = new TextureRegion(background, 800, 480);
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(background, 0, 0);
+		batch.draw(bgRegion, 0, 0);
 		batch.end();
 	}
 }
