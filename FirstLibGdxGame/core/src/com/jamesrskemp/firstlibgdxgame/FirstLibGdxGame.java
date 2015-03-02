@@ -28,6 +28,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	Vector2 planePosition = new Vector2();
 	Vector2 planeDefaultPosition = new Vector2();
 	Vector2 gravity = new Vector2();
+	// Friction.
+	private static final Vector2 damping = new Vector2(0.99f, 0.99f);
 
 	@Override
 	public void create () {
@@ -69,6 +71,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		//terrainOffset -= 200 * deltaTime;
 		planeAnimTime += deltaTime;
+		planeVelocity.scl(damping);
 		planeVelocity.add(gravity);
 		planePosition.mulAdd(planeVelocity, deltaTime);
 
