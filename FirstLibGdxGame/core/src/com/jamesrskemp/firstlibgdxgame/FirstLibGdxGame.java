@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 public class FirstLibGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -23,6 +24,10 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	float terrainOffset;
 	Animation plane;
 	float planeAnimTime;
+	Vector2 planeVelocity = new Vector2();
+	Vector2 planePosition = new Vector2();
+	Vector2 planeDefaultPosition = new Vector2();
+	Vector2 gravity = new Vector2();
 
 	@Override
 	public void create () {
@@ -34,7 +39,6 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		terrainBelow = new TextureRegion(new Texture("groundGrass.png"));
 		terrainAbove = new TextureRegion(terrainBelow);
 		terrainAbove.flip(true, true);
-		terrainOffset = 0;
 		plane = new Animation(0.05f,
 				new TextureRegion(new Texture("planeRed1.png")),
 				new TextureRegion(new Texture("planeRed2.png")),
@@ -42,7 +46,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 				new TextureRegion(new Texture("planeRed2.png"))
 				);
 		plane.setPlayMode(Animation.PlayMode.LOOP);
-		planeAnimTime = 0;
+		resetScene();
 	}
 
 	@Override
@@ -64,6 +68,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		//terrainOffset -= 200 * deltaTime;
 		planeAnimTime += deltaTime;
+		planeVelocity.add(gravity);
+		planePosition.mulAdd(planeVelocity, deltaTime);
 	}
 
 	public void drawScene() {
@@ -81,7 +87,17 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		batch.draw(terrainAbove, terrainOffset, 480 - terrainAbove.getRegionHeight());
 		batch.draw(terrainAbove, terrainOffset + terrainAbove.getRegionWidth(), 480 - terrainAbove.getRegionHeight());
 		// Draw our plane.
-		batch.draw(plane.getKeyFrame(planeAnimTime), 350, 200);
+		batch.draw(plane.getKeyFrame(planeAnimTime), planePosition.x, planePosition.y);
 		batch.end();
+	}
+
+	public void resetScene() {
+		terrainOffset = 0;
+		planeAnimTime = 0;
+		planeVelocity.set(100, 60);
+		gravity.set(0, -2);
+		// Plane itself is 88x73.
+		planeDefaultPosition.set(400-88/2, 240-73/2);
+		planePosition.set(planeDefaultPosition.x, planeDefaultPosition.y);
 	}
 }
