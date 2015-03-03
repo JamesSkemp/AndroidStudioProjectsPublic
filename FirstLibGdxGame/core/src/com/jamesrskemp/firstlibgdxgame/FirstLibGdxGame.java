@@ -37,8 +37,20 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	Vector2 tmpVector = new Vector2();
 	private static final int TOUCH_IMPULSE = 500;
 	TextureRegion tapIndicator;
+	TextureRegion tap1;
+	TextureRegion gameOver;
 	float tapDrawTime;
 	private static final float TAP_DRAW_TIME_MAX = 1.0f;
+	GameState gameState = GameState.INIT;
+
+	static enum GameState {
+		/**
+		 * Initialize
+		 */
+		INIT,
+		ACTION,
+		GAME_OVER
+	}
 
 	@Override
 	public void create () {
@@ -61,6 +73,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 				);
 		plane.setPlayMode(Animation.PlayMode.LOOP);
 		tapIndicator = atlas.findRegion("tap2");
+		tap1 = atlas.findRegion("tap1");
+		gameOver = atlas.findRegion("gameover");
 
 		resetScene();
 	}
@@ -80,10 +94,18 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	}
 
 	public void updateScene() {
-		// deltaTime will be 1/fps
-		float deltaTime = Gdx.graphics.getDeltaTime();
-
 		if (Gdx.input.justTouched()) {
+			if (gameState == GameState.INIT) {
+				gameState = GameState.ACTION;
+				return;
+			}
+
+			if (gameState == GameState.GAME_OVER) {
+				gameState = GameState.INIT;
+				resetScene();
+				return;
+			}
+
 			touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			// Convert touch position based upon the camera.
 			camera.unproject(touchPosition);
@@ -95,6 +117,14 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 
 			tapDrawTime = TAP_DRAW_TIME_MAX;
 		}
+
+		if (gameState == GameState.INIT || gameState == GameState.GAME_OVER) {
+			return;
+		}
+
+		// deltaTime will be 1/fps
+		float deltaTime = Gdx.graphics.getDeltaTime();
+
 		tapDrawTime -= deltaTime;
 
 		//terrainOffset -= 200 * deltaTime;
@@ -113,6 +143,12 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 
 		if (terrainOffset > 0) {
 			terrainOffset = -terrainBelow.getRegionWidth();
+		}
+
+		if (planePosition.y < terrainBelow.getRegionHeight() - 35 || planePosition.y + 73 > 480 - terrainBelow.getRegionHeight()) {
+			if (gameState != GameState.GAME_OVER) {
+				gameState = GameState.GAME_OVER;
+			}
 		}
 	}
 
@@ -137,6 +173,14 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 			// 29.5 is half the width and height of the image.
 			batch.draw(tapIndicator, touchPosition.x - 29.5f, touchPosition.y - 29.5f);
 		}
+		// Tap to begin indicator.
+		if (gameState == GameState.INIT) {
+			batch.draw(tap1, planePosition.x, planePosition.y - 80);
+		}
+		if (gameState == GameState.GAME_OVER) {
+			batch.draw(gameOver, 400-206, 240-80);
+		}
+
 		batch.end();
 	}
 
