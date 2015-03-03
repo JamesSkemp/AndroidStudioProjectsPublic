@@ -14,11 +14,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class FirstLibGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	FPSLogger fpsLogger;
 	OrthographicCamera camera;
+	Viewport viewport;
 	TextureRegion background;
 	TextureRegion terrainBelow;
 	TextureRegion terrainAbove;
@@ -39,7 +42,9 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		atlas = new TextureAtlas(Gdx.files.internal("ThrustCopter.pack"));
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.position.set(400, 240, 0);
+		// Show the clear color as bars as needed.
+		viewport = new FitViewport(800, 480, camera);
 		background = atlas.findRegion("background");
 		terrainBelow = atlas.findRegion("groundGrass");
 		terrainAbove = new TextureRegion(terrainBelow);
@@ -117,5 +122,10 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		// Plane itself is 88x73.
 		planeDefaultPosition.set(400-88/2, 240-73/2);
 		planePosition.set(planeDefaultPosition.x, planeDefaultPosition.y);
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		viewport.update(width, height);
 	}
 }
