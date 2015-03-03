@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,7 +19,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	FPSLogger fpsLogger;
 	OrthographicCamera camera;
-	Texture background;
+	TextureRegion background;
 	TextureRegion terrainBelow;
 	TextureRegion terrainAbove;
 	float terrainOffset;
@@ -30,22 +31,24 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	Vector2 gravity = new Vector2();
 	// Friction.
 	private static final Vector2 damping = new Vector2(0.99f, 0.99f);
+	TextureAtlas atlas;
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
 		fpsLogger = new FPSLogger();
+		batch = new SpriteBatch();
+		atlas = new TextureAtlas(Gdx.files.internal("ThrustCopter.pack"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
-		background = new Texture("background.png");
-		terrainBelow = new TextureRegion(new Texture("groundGrass.png"));
+		background = atlas.findRegion("background");
+		terrainBelow = atlas.findRegion("groundGrass");
 		terrainAbove = new TextureRegion(terrainBelow);
 		terrainAbove.flip(true, true);
 		plane = new Animation(0.05f,
-				new TextureRegion(new Texture("planeRed1.png")),
-				new TextureRegion(new Texture("planeRed2.png")),
-				new TextureRegion(new Texture("planeRed3.png")),
-				new TextureRegion(new Texture("planeRed2.png"))
+				atlas.findRegion("planeRed1"),
+				atlas.findRegion("planeRed2"),
+				atlas.findRegion("planeRed3"),
+				atlas.findRegion("planeRed2")
 				);
 		plane.setPlayMode(Animation.PlayMode.LOOP);
 
