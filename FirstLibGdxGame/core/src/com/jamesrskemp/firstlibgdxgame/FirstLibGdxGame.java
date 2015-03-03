@@ -13,7 +13,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -35,6 +37,12 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	// Friction.
 	private static final Vector2 damping = new Vector2(0.99f, 0.99f);
 	TextureAtlas atlas;
+	Vector3 touchPosition = new Vector3();
+	Vector2 tmpVector = new Vector2();
+	private static final int TOUCH_IMPULSE = 500;
+	TextureRegion tapIndicator;
+	float tapDrawTime;
+	private static final float TAP_DRAW_TIME_MAX = 1.0f;
 
 	@Override
 	public void create () {
@@ -56,6 +64,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 				atlas.findRegion("planeRed2")
 				);
 		plane.setPlayMode(Animation.PlayMode.LOOP);
+		tapIndicator = atlas.findRegion("tap2");
 
 		resetScene();
 	}
@@ -77,6 +86,21 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	public void updateScene() {
 		// deltaTime will be 1/fps
 		float deltaTime = Gdx.graphics.getDeltaTime();
+
+		if (Gdx.input.justTouched()) {
+			touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			// Convert touch position based upon the camera.
+			camera.unproject(touchPosition);
+			tmpVector.set(planePosition.x, planePosition.y);
+			tmpVector.sub(touchPosition.x, touchPosition.y).nor();
+			planeVelocity.mulAdd(tmpVector,
+					TOUCH_IMPULSE - MathUtils.clamp(Vector2.dst(touchPosition.x, touchPosition.y, planePosition.x, planePosition.y), 0, TOUCH_IMPULSE)
+			);
+
+			tapDrawTime = TAP_DRAW_TIME_MAX;
+		}
+		tapDrawTime -= deltaTime;
+
 		//terrainOffset -= 200 * deltaTime;
 		planeAnimTime += deltaTime;
 		planeVelocity.scl(damping);
@@ -111,6 +135,11 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		batch.draw(terrainAbove, terrainOffset + terrainAbove.getRegionWidth(), 480 - terrainAbove.getRegionHeight());
 		// Draw our plane.
 		batch.draw(plane.getKeyFrame(planeAnimTime), planePosition.x, planePosition.y);
+		// Tap indicator.
+		if (tapDrawTime > 0) {
+			// 29.5 is half the width and height of the image.
+			batch.draw(tapIndicator, touchPosition.x - 29.5f, touchPosition.y - 29.5f);
+		}
 		batch.end();
 	}
 
