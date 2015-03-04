@@ -2,10 +2,15 @@ package com.jamesrskemp.firstlibgdxgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -16,6 +21,8 @@ public class FirstLibGdxGame extends Game {
 
 	SpriteBatch batch;
 	TextureAtlas atlas;
+
+	AssetManager manager = new AssetManager();
 
 	public static final int screenWidth = 800;
 	public static final int screenHeight = 480;
@@ -30,8 +37,16 @@ public class FirstLibGdxGame extends Game {
 
 	@Override
 	public void create () {
+		manager.load("sounds/journey.mp3", Music.class);
+		manager.load("sounds/alarm.ogg", Sound.class);
+		manager.load("sounds/crash.ogg", Sound.class);
+		manager.load("sounds/pop.ogg", Sound.class);
+		manager.load("ThrustCopter.pack", TextureAtlas.class);
+		manager.finishLoading();
+
 		batch = new SpriteBatch();
-		atlas = new TextureAtlas(Gdx.files.internal("ThrustCopter.pack"));
+		atlas = manager.get("ThrustCopter.pack", TextureAtlas.class);
+
 		setScreen(new ThrustCopterScene(this));
 	}
 
@@ -50,5 +65,6 @@ public class FirstLibGdxGame extends Game {
 	public void dispose() {
 		batch.dispose();
 		atlas.dispose();
+		manager.dispose();
 	}
 }

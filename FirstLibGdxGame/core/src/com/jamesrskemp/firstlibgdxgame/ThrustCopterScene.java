@@ -2,6 +2,7 @@ package com.jamesrskemp.firstlibgdxgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -108,13 +109,13 @@ public class ThrustCopterScene extends ScreenAdapter {
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny1"));
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny2"));
 
-		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/journey.mp3"));
+		music = game.manager.get("sounds/journey.mp3", Music.class);
 		music.setLooping(true);
 		music.play();
 
-		tapSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pop.ogg"));
-		crashSound = Gdx.audio.newSound(Gdx.files.internal("sounds/crash.ogg"));
-		spawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/alarm.ogg"));
+		tapSound = game.manager.get("sounds/pop.ogg", Sound.class);
+		crashSound = game.manager.get("sounds/crash.ogg", Sound.class);
+		spawnSound = game.manager.get("sounds/alarm.ogg", Sound.class);
 
 		resetScene();
 	}
