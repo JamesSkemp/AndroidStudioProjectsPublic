@@ -3,6 +3,8 @@ package com.jamesrskemp.firstlibgdxgame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -62,6 +64,11 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	Vector2 meteorVelocity = new Vector2();
 	float nextMeteorIn;
 
+	Music music;
+	Sound tapSound;
+	Sound crashSound;
+	Sound spawnSound;
+
 	static enum GameState {
 		/**
 		 * Initialize
@@ -104,6 +111,14 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny1"));
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny2"));
 
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/journey.mp3"));
+		music.setLooping(true);
+		music.play();
+
+		tapSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pop.ogg"));
+		crashSound = Gdx.audio.newSound(Gdx.files.internal("sounds/crash.ogg"));
+		spawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/alarm.ogg"));
+
 		resetScene();
 	}
 
@@ -119,6 +134,13 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
+		tapSound.dispose();
+		crashSound.dispose();
+		spawnSound.dispose();
+		music.dispose();
+		pillars.clear();
+		meteorTextures.clear();
+		atlas.dispose();
 	}
 
 	private void updateScene() {
@@ -133,6 +155,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 				resetScene();
 				return;
 			}
+
+			tapSound.play();
 
 			touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			// Convert touch position based upon the camera.
@@ -187,6 +211,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 
 			if (planeRect.overlaps(obstacleRect)) {
 				if (gameState != GameState.GAME_OVER) {
+					crashSound.play();
 					gameState = GameState.GAME_OVER;
 				}
 			}
@@ -197,6 +222,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 
 			if (planeRect.overlaps(obstacleRect)) {
 				if (gameState != GameState.GAME_OVER) {
+					crashSound.play();
 					gameState = GameState.GAME_OVER;
 				}
 			}
@@ -221,6 +247,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 
 		if (planePosition.y < terrainBelow.getRegionHeight() - 35 || planePosition.y + 73 > 480 - terrainBelow.getRegionHeight()) {
 			if (gameState != GameState.GAME_OVER) {
+				crashSound.play();
 				gameState = GameState.GAME_OVER;
 			}
 		}
@@ -326,5 +353,6 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		destination.y = (float)(80 + Math.random() * 320);
 		destination.sub(meteorPosition).nor();
 		meteorVelocity.mulAdd(destination, METEOR_SPEED);
+		spawnSound.play();
 	}
 }
