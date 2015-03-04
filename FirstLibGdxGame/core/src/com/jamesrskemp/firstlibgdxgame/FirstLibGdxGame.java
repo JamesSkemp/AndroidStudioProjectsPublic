@@ -121,7 +121,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		batch.dispose();
 	}
 
-	public void updateScene() {
+	private void updateScene() {
 		if (Gdx.input.justTouched()) {
 			if (gameState == GameState.INIT) {
 				gameState = GameState.ACTION;
@@ -228,7 +228,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		tapDrawTime -= deltaTime;
 	}
 
-	public void drawScene() {
+	private void drawScene() {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -271,7 +271,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		batch.end();
 	}
 
-	public void resetScene() {
+	private void resetScene() {
 		terrainOffset = 0;
 		planeAnimTime = 0;
 		planeVelocity.set(200, 60);
