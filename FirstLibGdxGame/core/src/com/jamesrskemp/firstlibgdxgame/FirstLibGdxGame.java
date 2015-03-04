@@ -239,6 +239,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		planeDefaultPosition.set(400-88/2, 240-73/2);
 		planePosition.set(planeDefaultPosition.x, planeDefaultPosition.y);
 		scrollVelocity.set(4, 0);
+		pillars.clear();
+		lastPillarPosition = new Vector2();
 	}
 
 	@Override
