@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -16,17 +15,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by James on 3/3/2015.
  */
 public class ThrustCopterScene extends ScreenAdapter {
-	SpriteBatch batch;
-	FPSLogger fpsLogger;
+	FirstLibGdxGame game;
+
 	OrthographicCamera camera;
-	Viewport viewport;
+	SpriteBatch batch;
+	TextureAtlas atlas;
+
 	TextureRegion background;
 	TextureRegion terrainBelow;
 	TextureRegion terrainAbove;
@@ -41,7 +40,6 @@ public class ThrustCopterScene extends ScreenAdapter {
 	Vector2 gravity = new Vector2();
 	// Friction.
 	private static final Vector2 damping = new Vector2(0.99f, 0.99f);
-	TextureAtlas atlas;
 	Vector3 touchPosition = new Vector3();
 	Vector2 tmpVector = new Vector2();
 	private static final int TOUCH_IMPULSE = 500;
@@ -80,14 +78,12 @@ public class ThrustCopterScene extends ScreenAdapter {
 		GAME_OVER
 	}
 
-	public ThrustCopterScene() {
-		fpsLogger = new FPSLogger();
-		batch = new SpriteBatch();
-		atlas = new TextureAtlas(Gdx.files.internal("ThrustCopter.pack"));
-		camera = new OrthographicCamera();
-		camera.position.set(400, 240, 0);
-		// Show the clear color as bars as needed.
-		viewport = new FitViewport(800, 480, camera);
+	public ThrustCopterScene(FirstLibGdxGame thrustCopter) {
+		game = thrustCopter;
+		camera = game.camera;
+		batch = game.batch;
+		atlas = game.atlas;
+
 		background = atlas.findRegion("background");
 		terrainBelow = atlas.findRegion("groundGrass");
 		terrainAbove = new TextureRegion(terrainBelow);
@@ -127,26 +123,18 @@ public class ThrustCopterScene extends ScreenAdapter {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		fpsLogger.log();
 		updateScene();
 		drawScene();
 	}
 
 	@Override
 	public void dispose() {
-		batch.dispose();
 		tapSound.dispose();
 		crashSound.dispose();
 		spawnSound.dispose();
 		music.dispose();
 		pillars.clear();
 		meteorTextures.clear();
-		atlas.dispose();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		viewport.update(width, height);
 	}
 
 	private void resetScene() {
