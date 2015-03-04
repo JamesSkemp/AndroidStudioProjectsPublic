@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -23,6 +24,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	TextureRegion background;
 	TextureRegion terrainBelow;
 	TextureRegion terrainAbove;
+	TextureRegion pillarUp;
+	TextureRegion pillarDown;
 	float terrainOffset;
 	Animation plane;
 	float planeAnimTime;
@@ -43,6 +46,9 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	private static final float TAP_DRAW_TIME_MAX = 1.0f;
 	GameState gameState = GameState.INIT;
 	Vector2 scrollVelocity = new Vector2();
+	Array<Vector2> pillars = new Array<Vector2>();
+	Vector2 lastPillarPosition = new Vector2();
+	float deltaPosition;
 
 	static enum GameState {
 		/**
@@ -66,6 +72,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		terrainBelow = atlas.findRegion("groundGrass");
 		terrainAbove = new TextureRegion(terrainBelow);
 		terrainAbove.flip(true, true);
+		pillarUp = atlas.findRegion("rockGrassUp");
+		pillarDown = atlas.findRegion("rockGrassDown");
 		plane = new Animation(0.05f,
 				atlas.findRegion("planeRed1"),
 				atlas.findRegion("planeRed2"),
@@ -137,6 +145,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		planePosition.mulAdd(planeVelocity, deltaTime);
 
 		terrainOffset -= planePosition.x - planeDefaultPosition.x;
+		deltaPosition = planePosition.x - planeDefaultPosition.x;
 		// Keep the plane in the same place on the x-axis.
 		planePosition.x = planeDefaultPosition.x;
 		if (terrainOffset * -1 > terrainBelow.getRegionWidth()) {
@@ -145,6 +154,17 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 
 		if (terrainOffset > 0) {
 			terrainOffset = -terrainBelow.getRegionWidth();
+		}
+
+		for (Vector2 vec : pillars) {
+			vec.x -= deltaPosition;
+			if (vec.x + pillarUp.getRegionWidth() < -10) {
+				pillars.removeValue(vec, false);
+			}
+		}
+
+		if (lastPillarPosition.x < 400) {
+			addPillar();
 		}
 
 		if (planePosition.y < terrainBelow.getRegionHeight() - 35 || planePosition.y + 73 > 480 - terrainBelow.getRegionHeight()) {
@@ -163,6 +183,14 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		batch.draw(background, 0, 0);
 		// Re-enable blending as our next items will have some transparency.
 		batch.enableBlending();
+		// Draw our pillar(s).
+		for (Vector2 vec : pillars) {
+			if (vec.y == 1) {
+				batch.draw(pillarUp, vec.x, 0);
+			} else {
+				batch.draw(pillarDown, vec.x, 480 - pillarDown.getRegionHeight());
+			}
+		}
 		// Draw our ceiling and ground.
 		batch.draw(terrainBelow, terrainOffset, 0);
 		batch.draw(terrainBelow, terrainOffset + terrainBelow.getRegionWidth(), 0);
@@ -200,5 +228,21 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height);
+	}
+
+	private void addPillar() {
+		Vector2 pillarPosition = new Vector2();
+		if (pillars.size == 0) {
+			pillarPosition.x = (float)(800 + Math.random() * 600);
+		} else {
+			pillarPosition.x = lastPillarPosition.x + (float)(600 + Math.random() * 600);
+		}
+		if (MathUtils.randomBoolean()) {
+			pillarPosition.y = 1;
+		} else {
+			pillarPosition.y = -1;
+		}
+		lastPillarPosition = pillarPosition;
+		pillars.add(pillarPosition);
 	}
 }
