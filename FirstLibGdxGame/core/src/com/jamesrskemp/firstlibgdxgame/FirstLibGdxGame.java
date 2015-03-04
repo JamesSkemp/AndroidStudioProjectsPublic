@@ -53,6 +53,14 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	float deltaPosition;
 	Rectangle planeRect = new Rectangle();
 	Rectangle obstacleRect = new Rectangle();
+	// Meteors
+	Array<TextureAtlas.AtlasRegion> meteorTextures = new Array<TextureAtlas.AtlasRegion>();
+	TextureRegion selectedMeteorTexture;
+	boolean meteorInScene;
+	private static final int METEOR_SPEED = 60;
+	Vector2 meteorPosition = new Vector2();
+	Vector2 meteorVelocity = new Vector2();
+	float nextMeteorIn;
 
 	static enum GameState {
 		/**
@@ -88,6 +96,13 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		tapIndicator = atlas.findRegion("tap2");
 		tap1 = atlas.findRegion("tap1");
 		gameOver = atlas.findRegion("gameover");
+		// Meteors
+		meteorTextures.add(atlas.findRegion("meteorBrown_med1"));
+		meteorTextures.add(atlas.findRegion("meteorBrown_med2"));
+		meteorTextures.add(atlas.findRegion("meteorBrown_small1"));
+		meteorTextures.add(atlas.findRegion("meteorBrown_small2"));
+		meteorTextures.add(atlas.findRegion("meteorBrown_tiny1"));
+		meteorTextures.add(atlas.findRegion("meteorBrown_tiny2"));
 
 		resetScene();
 	}
@@ -138,8 +153,6 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		// deltaTime will be 1/fps
 		float deltaTime = Gdx.graphics.getDeltaTime();
 
-		tapDrawTime -= deltaTime;
-
 		//terrainOffset -= 200 * deltaTime;
 		planeAnimTime += deltaTime;
 		planeVelocity.scl(damping);
@@ -179,8 +192,31 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 			}
 		}
 
+		if (meteorInScene) {
+			obstacleRect.set(meteorPosition.x + 2, meteorPosition.y + 2, selectedMeteorTexture.getRegionWidth() - 4, selectedMeteorTexture.getRegionHeight() - 4);
+
+			if (planeRect.overlaps(obstacleRect)) {
+				if (gameState != GameState.GAME_OVER) {
+					gameState = GameState.GAME_OVER;
+				}
+			}
+		}
+
 		if (lastPillarPosition.x < 400) {
 			addPillar();
+		}
+
+		if (meteorInScene) {
+			meteorPosition.mulAdd(meteorVelocity, deltaTime);
+			meteorPosition.x -= deltaPosition;
+			if (meteorPosition.x < -10) {
+				meteorInScene = false;
+			}
+		}
+
+		nextMeteorIn -= deltaTime;
+		if (nextMeteorIn <= 0) {
+			launchMeteor();
 		}
 
 		if (planePosition.y < terrainBelow.getRegionHeight() - 35 || planePosition.y + 73 > 480 - terrainBelow.getRegionHeight()) {
@@ -188,6 +224,8 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 				gameState = GameState.GAME_OVER;
 			}
 		}
+
+		tapDrawTime -= deltaTime;
 	}
 
 	public void drawScene() {
@@ -206,6 +244,9 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 			} else {
 				batch.draw(pillarDown, vec.x, 480 - pillarDown.getRegionHeight());
 			}
+		}
+		if (meteorInScene) {
+			batch.draw(selectedMeteorTexture, meteorPosition.x, meteorPosition.y);
 		}
 		// Draw our ceiling and ground.
 		batch.draw(terrainBelow, terrainOffset, 0);
@@ -241,6 +282,9 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		scrollVelocity.set(4, 0);
 		pillars.clear();
 		lastPillarPosition = new Vector2();
+
+		meteorInScene = false;
+		nextMeteorIn = (float)Math.random() * 5;
 	}
 
 	@Override
@@ -262,5 +306,25 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		}
 		lastPillarPosition = pillarPosition;
 		pillars.add(pillarPosition);
+	}
+
+	private void launchMeteor() {
+		nextMeteorIn = 1.5f + (float)Math.random() * 5;
+		if (meteorInScene) {
+			return;
+		}
+		meteorInScene = true;
+
+		int id = (int)(Math.random() * meteorTextures.size);
+		selectedMeteorTexture = meteorTextures.get(id);
+
+		meteorPosition.x = 810;
+		meteorPosition.y = (float)(80 + Math.random() * 320);
+
+		Vector2 destination = new Vector2();
+		destination.x = -10;
+		destination.y = (float)(80 + Math.random() * 320);
+		destination.sub(meteorPosition).nor();
+		meteorVelocity.mulAdd(destination, METEOR_SPEED);
 	}
 }
