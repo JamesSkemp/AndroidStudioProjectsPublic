@@ -42,6 +42,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 	float tapDrawTime;
 	private static final float TAP_DRAW_TIME_MAX = 1.0f;
 	GameState gameState = GameState.INIT;
+	Vector2 scrollVelocity = new Vector2();
 
 	static enum GameState {
 		/**
@@ -131,6 +132,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		planeAnimTime += deltaTime;
 		planeVelocity.scl(damping);
 		planeVelocity.add(gravity);
+		planeVelocity.add(scrollVelocity);
 
 		planePosition.mulAdd(planeVelocity, deltaTime);
 
@@ -192,6 +194,7 @@ public class FirstLibGdxGame extends ApplicationAdapter {
 		// Plane itself is 88x73.
 		planeDefaultPosition.set(400-88/2, 240-73/2);
 		planePosition.set(planeDefaultPosition.x, planeDefaultPosition.y);
+		scrollVelocity.set(4, 0);
 	}
 
 	@Override
