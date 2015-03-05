@@ -64,6 +64,14 @@ public class ThrustCopterScene extends ScreenAdapter {
 	Vector2 meteorPosition = new Vector2();
 	Vector2 meteorVelocity = new Vector2();
 	float nextMeteorIn;
+	// Pickups
+	// x = star, y = fuel, z = shield
+	Vector3 pickupTiming = new Vector3();
+	Pickup tempPickup;
+	Array<Pickup> pickupsInScene = new Array<Pickup>();
+	int starCount;
+	float fuelCount;
+	float shieldCount;
 
 	Music music;
 	Sound tapSound;
@@ -144,14 +152,21 @@ public class ThrustCopterScene extends ScreenAdapter {
 		planeVelocity.set(200, 60);
 		gravity.set(0, -2);
 		// Plane itself is 88x73.
-		planeDefaultPosition.set(400-88/2, 240-73/2);
+		planeDefaultPosition.set(400 - 88 / 2, 240 - 73 / 2);
 		planePosition.set(planeDefaultPosition.x, planeDefaultPosition.y);
 		scrollVelocity.set(4, 0);
 		pillars.clear();
+		pickupsInScene.clear();
 		lastPillarPosition = new Vector2();
 
 		meteorInScene = false;
-		nextMeteorIn = (float)Math.random() * 5;
+		nextMeteorIn = (float) Math.random() * 5;
+		pickupTiming.x = 1 + (float) Math.random() * 2;
+		pickupTiming.y = 3 + (float) Math.random() * 2;
+		pickupTiming.z = 1 + (float) Math.random() * 3;
+		starCount = 0;
+		fuelCount = 100;
+		shieldCount = 15;
 	}
 
 	private void drawScene() {
@@ -170,6 +185,9 @@ public class ThrustCopterScene extends ScreenAdapter {
 			} else {
 				batch.draw(pillarDown, vec.x, 480 - pillarDown.getRegionHeight());
 			}
+		}
+		for (Pickup pickup : pickupsInScene) {
+			batch.draw(pickup.pickupTexture, pickup.pickupPosition.x, pickup.pickupPosition.y);
 		}
 		if (meteorInScene) {
 			batch.draw(selectedMeteorTexture, meteorPosition.x, meteorPosition.y);
@@ -191,7 +209,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 			batch.draw(tap1, planePosition.x, planePosition.y - 80);
 		}
 		if (gameState == GameState.GAME_OVER) {
-			batch.draw(gameOver, 400-206, 240-80);
+			batch.draw(gameOver, 400 - 206, 240 - 80);
 		}
 
 		batch.end();
@@ -252,6 +270,18 @@ public class ThrustCopterScene extends ScreenAdapter {
 		}
 
 		planeRect.set(planePosition.x + 16, planePosition.y, 50, 73);
+
+		for (Pickup pickup : pickupsInScene) {
+			pickup.pickupPosition.x -= deltaPosition;
+			if (pickup.pickupPosition.x + pickup.pickupTexture.getRegionWidth() < -10) {
+				pickupsInScene.removeValue(pickup, false);
+			}
+			obstacleRect.set(pickup.pickupPosition.x, pickup.pickupPosition.y, pickup.pickupTexture.getRegionWidth(), pickup.pickupTexture.getRegionHeight());
+			if (planeRect.overlaps(obstacleRect)) {
+				pickIt(pickup);
+			}
+		}
+
 		for (Vector2 vec : pillars) {
 			vec.x -= deltaPosition;
 			if (vec.x + pillarUp.getRegionWidth() < -10) {
@@ -306,6 +336,10 @@ public class ThrustCopterScene extends ScreenAdapter {
 			}
 		}
 
+		checkAndCreatePickup(deltaTime);
+		fuelCount -= 6 * deltaTime;
+		shieldCount -= deltaTime;
+
 		tapDrawTime -= deltaTime;
 	}
 
@@ -344,5 +378,64 @@ public class ThrustCopterScene extends ScreenAdapter {
 		destination.sub(meteorPosition).nor();
 		meteorVelocity.mulAdd(destination, METEOR_SPEED);
 		spawnSound.play();
+	}
+
+	private void checkAndCreatePickup(float delta) {
+		pickupTiming.sub(delta);
+		if (pickupTiming.x <= 0) {
+			pickupTiming.x = (float)(0.5 + Math.random() * 0.5);
+			if (addPickup(Pickup.STAR)) {
+				pickupTiming.x = 1 + (float)Math.random() * 2;
+			}
+		}
+		if (pickupTiming.y <= 0) {
+			pickupTiming.y = (float)(0.5 + Math.random() * 0.5);
+			if (addPickup(Pickup.FUEL)) {
+				pickupTiming.y = 3 + (float)Math.random() * 2;
+			}
+		}
+		if (pickupTiming.z <= 0) {
+			pickupTiming.z = (float)(0.5 + Math.random() * 0.5);
+			if (addPickup(Pickup.SHIELD)) {
+				pickupTiming.z = 10 + (float)Math.random() * 3;
+			}
+		}
+	}
+
+	private boolean addPickup(int pickupType) {
+		Vector2 randomPosition = new Vector2();
+		randomPosition.x = 820;
+		randomPosition.y = (float)(80 + Math.random() * 320);
+		for (Vector2 vec : pillars) {
+			if (vec.y == 1) {
+				obstacleRect.set(vec.x, 0, pillarUp.getRegionWidth(), pillarUp.getRegionHeight());
+			}
+			else {
+				obstacleRect.set(vec.x, 480 - pillarDown.getRegionHeight(), pillarUp.getRegionWidth(), pillarUp.getRegionHeight());
+			}
+			if (obstacleRect.contains(randomPosition)) {
+				return false;
+			}
+		}
+		tempPickup = new Pickup(pickupType, game.manager);
+		tempPickup.pickupPosition.set(randomPosition);
+		pickupsInScene.add(tempPickup);
+		return true;
+	}
+
+	private void pickIt(Pickup pickup) {
+		pickup.pickupSound.play();
+		switch (pickup.pickupType) {
+			case Pickup.STAR:
+				starCount += pickup.pickupValue;
+				break;
+			case Pickup.FUEL:
+				fuelCount = pickup.pickupValue;
+				break;
+			case Pickup.SHIELD:
+				shieldCount = pickup.pickupValue;
+				break;
+		}
+		pickupsInScene.removeValue(pickup, false);
 	}
 }
