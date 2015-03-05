@@ -56,7 +56,7 @@ public class MenuScene extends ScreenAdapter {
 		helpTip = new Label("Tap around the plane to move it!", skin);
 		helpTip.setColor(Color.NAVY);
 
-		table = new Table().debug();
+		table = new Table();
 		playButton = new TextButton("PLAY GAME", skin);
 		table.add(playButton).padBottom(10);
 		table.row();
@@ -70,7 +70,7 @@ public class MenuScene extends ScreenAdapter {
 		table.add(exitButton);
 		table.setPosition(400, -200);
 
-		options = new Table().debug();
+		options = new Table();
 		Label soundTitle = new Label("SOUND OPTIONS", skin);
 		soundTitle.setColor(Color.NAVY);
 		options.add(soundTitle).padBottom(25).colspan(2);
@@ -88,7 +88,7 @@ public class MenuScene extends ScreenAdapter {
 		muteCheckBox.setChecked(!game.soundEnabled);
 		volumeSlider.setValue(game.soundVolume);
 
-		exit = new Table().debug();
+		exit = new Table();
 		Label exitTitle = new Label("Confirm Exit", skin);
 		exitTitle.setColor(Color.NAVY);
 		exit.add(exitTitle).padBottom(25).colspan(2);
@@ -223,7 +223,7 @@ public class MenuScene extends ScreenAdapter {
 		stage.draw();
 
 		//Table.drawDebug(stage);
-		stage.setDebugAll(false);
+		//stage.setDebugAll(true);
 
 		super.render(delta);
 	}
