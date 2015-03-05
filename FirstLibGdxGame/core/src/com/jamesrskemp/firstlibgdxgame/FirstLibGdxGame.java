@@ -22,6 +22,9 @@ public class FirstLibGdxGame extends Game {
 
 	BitmapFont font;
 
+	boolean soundEnabled;
+	float soundVolume;
+
 	public static final int screenWidth = 800;
 	public static final int screenHeight = 480;
 
@@ -36,6 +39,8 @@ public class FirstLibGdxGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		soundEnabled = true;
+		soundVolume = 1;
 
 		setScreen(new LoadingScreen(this));
 	}

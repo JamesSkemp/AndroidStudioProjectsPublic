@@ -141,9 +141,12 @@ public class ThrustCopterScene extends ScreenAdapter {
 
 		fuelIndicator = game.manager.get("life.png", Texture.class);
 
-		music = game.manager.get("sounds/journey.mp3", Music.class);
-		music.setLooping(true);
-		music.play();
+		if (game.soundEnabled) {
+			music = game.manager.get("sounds/journey.mp3", Music.class);
+			music.setLooping(true);
+			music.setVolume(game.soundVolume);
+			music.play();
+		}
 
 		tapSound = game.manager.get("sounds/pop.ogg", Sound.class);
 		crashSound = game.manager.get("sounds/crash.ogg", Sound.class);

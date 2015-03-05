@@ -85,7 +85,9 @@ public class LoadingScreen extends ScreenAdapter {
 		game.manager.load("sounds/shield.ogg", Sound.class);
 		game.manager.load("ThrustCopter.pack", TextureAtlas.class);
 		game.manager.load("life.png", Texture.class);
+		game.manager.load("title.png", Texture.class);
 		game.manager.load("fonts/impact-40.fnt", BitmapFont.class);
+		game.manager.load("fonts/default.fnt", BitmapFont.class);
 		game.manager.load("Explosion", ParticleEffect.class);
 		game.manager.load("Smoke", ParticleEffect.class);
 		game.manager.finishLoading();
@@ -136,7 +138,7 @@ public class LoadingScreen extends ScreenAdapter {
 			game.font = game.manager.get("fonts/impact-40.fnt", BitmapFont.class);
 
 			if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
-				game.setScreen(new ThrustCopterScene(game));
+				game.setScreen(new MenuScene(game));
 			}
 		}
 
