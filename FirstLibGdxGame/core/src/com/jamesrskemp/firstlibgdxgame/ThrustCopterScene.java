@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -83,6 +84,9 @@ public class ThrustCopterScene extends ScreenAdapter {
 	Sound crashSound;
 	Sound spawnSound;
 
+	BitmapFont font;
+	float score;
+
 	static enum GameState {
 		/**
 		 * Initialize
@@ -97,6 +101,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 		camera = game.camera;
 		batch = game.batch;
 		atlas = game.atlas;
+		font = game.manager.get("fonts/impact-40.fnt", BitmapFont.class);
 
 		background = atlas.findRegion("background");
 		terrainBelow = atlas.findRegion("groundGrass");
@@ -184,6 +189,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 		// width of the texture
 		fuelPercentage = 114;
 		shieldCount = 15;
+
+		score = 0;
 	}
 
 	private void drawScene() {
@@ -222,6 +229,10 @@ public class ThrustCopterScene extends ScreenAdapter {
 		batch.draw(fuelIndicator, 10, 350, 0, 0, fuelPercentage, 119);
 		// Draw our plane.
 		batch.draw(plane.getKeyFrame(planeAnimTime), planePosition.x, planePosition.y);
+
+		font.draw(batch, "" + ((int)shieldCount), 390, 450);
+		font.draw(batch, "" + (int)(starCount + score), 700, 450);
+
 		if (shieldCount > 0) {
 			batch.draw(shield.getKeyFrame(planeAnimTime), planePosition.x - 20, planePosition.y);
 		}
