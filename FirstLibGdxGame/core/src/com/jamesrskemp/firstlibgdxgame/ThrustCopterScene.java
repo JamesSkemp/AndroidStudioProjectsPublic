@@ -5,8 +5,10 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -71,7 +73,9 @@ public class ThrustCopterScene extends ScreenAdapter {
 	Array<Pickup> pickupsInScene = new Array<Pickup>();
 	int starCount;
 	float fuelCount;
+	int fuelPercentage;
 	float shieldCount;
+	TextureRegion fuelIndicator;
 
 	Music music;
 	Sound tapSound;
@@ -116,6 +120,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 		meteorTextures.add(atlas.findRegion("meteorBrown_small2"));
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny1"));
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny2"));
+
+		fuelIndicator = atlas.findRegion("life");
 
 		music = game.manager.get("sounds/journey.mp3", Music.class);
 		music.setLooping(true);
@@ -166,6 +172,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 		pickupTiming.z = 1 + (float) Math.random() * 3;
 		starCount = 0;
 		fuelCount = 100;
+		// width of the texture
+		fuelPercentage = 114;
 		shieldCount = 15;
 	}
 
@@ -197,6 +205,12 @@ public class ThrustCopterScene extends ScreenAdapter {
 		batch.draw(terrainBelow, terrainOffset + terrainBelow.getRegionWidth(), 0);
 		batch.draw(terrainAbove, terrainOffset, 480 - terrainAbove.getRegionHeight());
 		batch.draw(terrainAbove, terrainOffset + terrainAbove.getRegionWidth(), 480 - terrainAbove.getRegionHeight());
+		// Draw our fuel indicator
+		batch.setColor(Color.BLACK);
+		batch.draw(fuelIndicator, 10, 350);
+		batch.setColor(Color.WHITE);
+		// 119 = fuelIndicator.getRegionHeight()
+		batch.draw(fuelIndicator, 10, 350);
 		// Draw our plane.
 		batch.draw(plane.getKeyFrame(planeAnimTime), planePosition.x, planePosition.y);
 		// Tap indicator.
@@ -217,6 +231,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 
 	private void updateScene() {
 		if (Gdx.input.justTouched()) {
+			tapSound.play();
+
 			if (gameState == GameState.INIT) {
 				gameState = GameState.ACTION;
 				return;
@@ -227,8 +243,6 @@ public class ThrustCopterScene extends ScreenAdapter {
 				resetScene();
 				return;
 			}
-
-			tapSound.play();
 
 			touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			// Convert touch position based upon the camera.
@@ -293,7 +307,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 				obstacleRect.set(vec.x + 10, 480 - pillarDown.getRegionHeight() + 10, pillarUp.getRegionWidth() - 20, pillarUp.getRegionHeight());
 			}
 
-			if (planeRect.overlaps(obstacleRect)) {
+			if (shieldCount <= 0 && planeRect.overlaps(obstacleRect)) {
 				if (gameState != GameState.GAME_OVER) {
 					crashSound.play();
 					gameState = GameState.GAME_OVER;
@@ -304,7 +318,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 		if (meteorInScene) {
 			obstacleRect.set(meteorPosition.x + 2, meteorPosition.y + 2, selectedMeteorTexture.getRegionWidth() - 4, selectedMeteorTexture.getRegionHeight() - 4);
 
-			if (planeRect.overlaps(obstacleRect)) {
+			if (shieldCount <= 0 && planeRect.overlaps(obstacleRect)) {
 				if (gameState != GameState.GAME_OVER) {
 					crashSound.play();
 					gameState = GameState.GAME_OVER;
@@ -338,6 +352,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 
 		checkAndCreatePickup(deltaTime);
 		fuelCount -= 6 * deltaTime;
+		fuelPercentage = (int)(114 * fuelCount / 100);
 		shieldCount -= deltaTime;
 
 		tapDrawTime -= deltaTime;
