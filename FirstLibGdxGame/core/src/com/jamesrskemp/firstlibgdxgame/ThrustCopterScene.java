@@ -36,6 +36,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 	TextureRegion pillarDown;
 	float terrainOffset;
 	Animation plane;
+	Animation shield;
 	float planeAnimTime;
 	Vector2 planeVelocity = new Vector2();
 	Vector2 planePosition = new Vector2();
@@ -120,6 +121,14 @@ public class ThrustCopterScene extends ScreenAdapter {
 		meteorTextures.add(atlas.findRegion("meteorBrown_small2"));
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny1"));
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny2"));
+
+		shield = new Animation(0.1f,
+				atlas.findRegion("shield1"),
+				atlas.findRegion("shield2"),
+				atlas.findRegion("shield3"),
+				atlas.findRegion("shield2")
+		);
+		shield.setPlayMode(Animation.PlayMode.LOOP);
 
 		fuelIndicator = game.manager.get("life.png", Texture.class);
 
@@ -213,6 +222,9 @@ public class ThrustCopterScene extends ScreenAdapter {
 		batch.draw(fuelIndicator, 10, 350, 0, 0, fuelPercentage, 119);
 		// Draw our plane.
 		batch.draw(plane.getKeyFrame(planeAnimTime), planePosition.x, planePosition.y);
+		if (shieldCount > 0) {
+			batch.draw(shield.getKeyFrame(planeAnimTime), planePosition.x - 20, planePosition.y);
+		}
 		// Tap indicator.
 		if (tapDrawTime > 0) {
 			// 29.5 is half the width and height of the image.
