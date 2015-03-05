@@ -379,6 +379,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 		shieldCount -= deltaTime;
 
 		tapDrawTime -= deltaTime;
+
+		score += deltaTime;
 	}
 
 	private void addPillar() {
