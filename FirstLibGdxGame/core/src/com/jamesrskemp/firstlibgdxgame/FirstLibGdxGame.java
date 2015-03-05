@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -48,6 +49,8 @@ public class FirstLibGdxGame extends Game {
 		manager.load("ThrustCopter.pack", TextureAtlas.class);
 		manager.load("life.png", Texture.class);
 		manager.load("fonts/impact-40.fnt", BitmapFont.class);
+		manager.load("Explosion", ParticleEffect.class);
+		manager.load("Smoke", ParticleEffect.class);
 		manager.finishLoading();
 
 		batch = new SpriteBatch();
