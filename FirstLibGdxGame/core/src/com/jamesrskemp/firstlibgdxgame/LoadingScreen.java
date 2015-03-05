@@ -135,7 +135,6 @@ public class LoadingScreen extends ScreenAdapter {
 			game.atlas = game.manager.get("ThrustCopter.pack", TextureAtlas.class);
 			game.font = game.manager.get("fonts/impact-40.fnt", BitmapFont.class);
 
-
 			if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
 				game.setScreen(new ThrustCopterScene(game));
 			}
