@@ -2,7 +2,6 @@ package com.jamesrskemp.firstlibgdxgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -24,9 +22,7 @@ import com.badlogic.gdx.utils.Array;
 /**
  * Created by James on 3/3/2015.
  */
-public class ThrustCopterScene extends ScreenAdapter {
-	FirstLibGdxGame game;
-
+public class ThrustCopterScene extends BaseScene {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	TextureAtlas atlas;
@@ -88,6 +84,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 	ParticleEffect smoke;
 	ParticleEffect explosion;
 
+	private boolean gamePaused = false;
+
 	float score;
 
 	static enum GameState {
@@ -100,7 +98,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 	}
 
 	public ThrustCopterScene(FirstLibGdxGame thrustCopter) {
-		game = thrustCopter;
+		super(thrustCopter);
+
 		camera = game.camera;
 		batch = game.batch;
 		atlas = game.atlas;
@@ -157,6 +156,10 @@ public class ThrustCopterScene extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
+		super.render(delta);
+		if (gamePaused) {
+			return;
+		}
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		updateScene();
@@ -495,5 +498,25 @@ public class ThrustCopterScene extends ScreenAdapter {
 			explosion.reset();
 			explosion.setPosition(planePosition.x + 40, planePosition.y + 40);
 		}
+	}
+
+	@Override
+	protected void handleBackPress() {
+		System.out.println("back");
+		if (gamePaused) {
+			resume();
+		} else {
+			pause();
+		}
+	}
+
+	@Override
+	public void pause () {
+		gamePaused = true;
+	}
+
+	@Override
+	public void resume () {
+		gamePaused = false;
 	}
 }

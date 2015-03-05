@@ -24,8 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 /**
  * Created by James on 3/5/2015.
  */
-public class MenuScene extends ScreenAdapter {
-	protected FirstLibGdxGame game;
+public class MenuScene extends BaseScene {
 	private Stage stage;
 	private Skin skin;
 	private Image screenBg;
@@ -46,7 +45,8 @@ public class MenuScene extends ScreenAdapter {
 	private boolean exitShown;
 
 	public MenuScene(FirstLibGdxGame firstLibGdxGame) {
-		this.game = firstLibGdxGame;
+		super(firstLibGdxGame);
+
 		stage = new Stage(game.viewport);
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -215,6 +215,7 @@ public class MenuScene extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
+		super.render(delta);
 		// Clear the screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -228,6 +229,7 @@ public class MenuScene extends ScreenAdapter {
 		super.render(delta);
 	}
 
+	@Override
 	protected void handleBackPress() {
 		if (!menuShown) {
 			showMenu(!menuShown);
