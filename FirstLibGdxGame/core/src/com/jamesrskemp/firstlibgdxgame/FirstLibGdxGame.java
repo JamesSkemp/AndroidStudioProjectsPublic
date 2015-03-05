@@ -45,6 +45,7 @@ public class FirstLibGdxGame extends Game {
 		manager.load("sounds/fuel.ogg", Sound.class);
 		manager.load("sounds/shield.ogg", Sound.class);
 		manager.load("ThrustCopter.pack", TextureAtlas.class);
+		manager.load("life.png", Texture.class);
 		manager.finishLoading();
 
 		batch = new SpriteBatch();

@@ -75,7 +75,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 	float fuelCount;
 	int fuelPercentage;
 	float shieldCount;
-	TextureRegion fuelIndicator;
+	Texture fuelIndicator;
 
 	Music music;
 	Sound tapSound;
@@ -121,7 +121,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny1"));
 		meteorTextures.add(atlas.findRegion("meteorBrown_tiny2"));
 
-		fuelIndicator = atlas.findRegion("life");
+		fuelIndicator = game.manager.get("life.png", Texture.class);
 
 		music = game.manager.get("sounds/journey.mp3", Music.class);
 		music.setLooping(true);
@@ -210,7 +210,7 @@ public class ThrustCopterScene extends ScreenAdapter {
 		batch.draw(fuelIndicator, 10, 350);
 		batch.setColor(Color.WHITE);
 		// 119 = fuelIndicator.getRegionHeight()
-		batch.draw(fuelIndicator, 10, 350);
+		batch.draw(fuelIndicator, 10, 350, 0, 0, fuelPercentage, 119);
 		// Draw our plane.
 		batch.draw(plane.getKeyFrame(planeAnimTime), planePosition.x, planePosition.y);
 		// Tap indicator.
