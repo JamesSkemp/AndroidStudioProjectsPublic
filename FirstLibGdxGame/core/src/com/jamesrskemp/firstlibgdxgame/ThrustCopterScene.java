@@ -384,7 +384,9 @@ public class ThrustCopterScene extends ScreenAdapter {
 		checkAndCreatePickup(deltaTime);
 		fuelCount -= 6 * deltaTime;
 		fuelPercentage = (int)(114 * fuelCount / 100);
-		shieldCount -= deltaTime;
+		if (shieldCount > 0) {
+			shieldCount -= deltaTime;
+		}
 
 		tapDrawTime -= deltaTime;
 
