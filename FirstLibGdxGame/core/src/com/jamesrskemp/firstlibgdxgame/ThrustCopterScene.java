@@ -85,8 +85,6 @@ public class ThrustCopterScene extends ScreenAdapter {
 	Sound crashSound;
 	Sound spawnSound;
 
-	BitmapFont font;
-
 	ParticleEffect smoke;
 	ParticleEffect explosion;
 
@@ -106,7 +104,6 @@ public class ThrustCopterScene extends ScreenAdapter {
 		camera = game.camera;
 		batch = game.batch;
 		atlas = game.atlas;
-		font = game.manager.get("fonts/impact-40.fnt", BitmapFont.class);
 		smoke = game.manager.get("Smoke", ParticleEffect.class);
 		explosion = game.manager.get("Explosion", ParticleEffect.class);
 
@@ -169,7 +166,6 @@ public class ThrustCopterScene extends ScreenAdapter {
 		crashSound.dispose();
 		spawnSound.dispose();
 		music.dispose();
-		font.dispose();
 		pillars.clear();
 		meteorTextures.clear();
 	}
@@ -238,8 +234,8 @@ public class ThrustCopterScene extends ScreenAdapter {
 		// Draw our plane.
 		batch.draw(plane.getKeyFrame(planeAnimTime), planePosition.x, planePosition.y);
 
-		font.draw(batch, "" + ((int)shieldCount), 390, 450);
-		font.draw(batch, "" + (int)(starCount + score), 700, 450);
+		game.font.draw(batch, "" + ((int)shieldCount), 390, 450);
+		game.font.draw(batch, "" + (int)(starCount + score), 700, 450);
 
 		smoke.draw(batch);
 
