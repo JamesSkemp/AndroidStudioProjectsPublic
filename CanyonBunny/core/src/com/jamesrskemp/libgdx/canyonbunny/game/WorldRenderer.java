@@ -1,6 +1,7 @@
 package com.jamesrskemp.libgdx.canyonbunny.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.jamesrskemp.libgdx.canyonbunny.util.Constants;
@@ -26,10 +27,15 @@ public class WorldRenderer implements Disposable {
 	}
 
 	public void render() {
-		// TODO actual content
+		renderTestObjects();
+	}
+
+	private void renderTestObjects() {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-
+		for (Sprite sprite : worldController.testSprites) {
+			sprite.draw(batch);
+		}
 		batch.end();
 	}
 
