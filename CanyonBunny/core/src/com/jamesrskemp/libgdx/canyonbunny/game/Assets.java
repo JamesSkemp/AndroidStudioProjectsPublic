@@ -46,5 +46,55 @@ public class Assets implements Disposable, AssetErrorListener {
 		Gdx.app.error(TAG, "Couldn't load asset '" + asset.fileName + "'", throwable);
 	}
 
+	public class AssetBunny {
+		public final TextureAtlas.AtlasRegion head;
 
+		public AssetBunny(TextureAtlas atlas) {
+			head = atlas.findRegion("bunny_head");
+		}
+	}
+
+	public class AssetRock {
+		public final TextureAtlas.AtlasRegion edge;
+		public final TextureAtlas.AtlasRegion middle;
+
+		public AssetRock(TextureAtlas atlas) {
+			edge = atlas.findRegion("rock_edge");
+			middle = atlas.findRegion("rock_middle");
+		}
+	}
+
+	public class AssetGoldCoin {
+		public final TextureAtlas.AtlasRegion goldCoin;
+
+		public AssetGoldCoin(TextureAtlas atlas) {
+			goldCoin = atlas.findRegion("item_gold_coin");
+		}
+	}
+
+	public class AssetFeather {
+		public final TextureAtlas.AtlasRegion feather;
+
+		public AssetFeather(TextureAtlas atlas) {
+			feather = atlas.findRegion("item_feather");
+		}
+	}
+
+	public class AssetLevelDecoration {
+		public final TextureAtlas.AtlasRegion cloud01;
+		public final TextureAtlas.AtlasRegion cloud02;
+		public final TextureAtlas.AtlasRegion cloud03;
+		public final TextureAtlas.AtlasRegion mountainLeft;
+		public final TextureAtlas.AtlasRegion mountainRight;
+		public final TextureAtlas.AtlasRegion waterOverlay;
+
+		public AssetLevelDecoration(TextureAtlas atlas) {
+			cloud01 = atlas.findRegion("cloud01");
+			cloud02 = atlas.findRegion("cloud02");
+			cloud03 = atlas.findRegion("cloud03");
+			mountainLeft = atlas.findRegion("mountain_left");
+			mountainRight = atlas.findRegion("mountain_right");
+			waterOverlay = atlas.findRegion("water_overlay");
+		}
+	}
 }
