@@ -57,6 +57,10 @@ public class WorldRenderer implements Disposable {
 		batch.end();
 	}
 
+	/**
+	 * Add the player's current score in the top left corner of the screen.
+	 * @param batch
+	 */
 	private void renderGuiScore(SpriteBatch batch) {
 		float x = -15;
 		float y = -15;
@@ -65,6 +69,10 @@ public class WorldRenderer implements Disposable {
 		Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.score, x + 75, y + 37);
 	}
 
+	/**
+	 * Add the player's current extra lives in the top right corner of the screen.
+	 * @param batch
+	 */
 	private void renderGuiExtraLives(SpriteBatch batch) {
 		float x = cameraGUI.viewportWidth - 50 - Constants.LIVES_START * 50;
 		float y = -15;
@@ -78,6 +86,11 @@ public class WorldRenderer implements Disposable {
 		}
 	}
 
+	/**
+	 * Add the current frames per second in the bottom right corner of the screen.
+	 * Will display in green, yellow, or red text, depending upon performance.
+	 * @param batch
+	 */
 	private void renderGuiFpsCount(SpriteBatch batch) {
 		float x = cameraGUI.viewportWidth - 55;
 		float y = cameraGUI.viewportHeight - 15;
