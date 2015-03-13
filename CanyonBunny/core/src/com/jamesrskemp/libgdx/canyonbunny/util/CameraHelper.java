@@ -30,6 +30,9 @@ public class CameraHelper {
 		}
 		position.x = target.position.x + target.origin.x;
 		position.y = target.position.y + target.origin.y;
+
+		// Prevent camera from going below the water.
+		position.y = Math.max(-1, position.y);
 	}
 
 	public void setPosition(float x, float y) {
