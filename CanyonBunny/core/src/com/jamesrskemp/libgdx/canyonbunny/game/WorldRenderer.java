@@ -53,7 +53,9 @@ public class WorldRenderer implements Disposable {
 		batch.begin();
 		renderGuiScore(batch);
 		renderGuiExtraLives(batch);
+		renderGuiFeatherPowerup(batch);
 		renderGuiFpsCount(batch);
+		renderGuiGameOverMessage(batch);
 		batch.end();
 	}
 
@@ -87,6 +89,30 @@ public class WorldRenderer implements Disposable {
 	}
 
 	/**
+	 * Add the feather icon and time remaining in the top left corner of the screen, if applicable.
+	 * @param batch
+	 */
+	private void renderGuiFeatherPowerup(SpriteBatch batch) {
+		float x = -15;
+		float y = 30;
+		float timeLeftFeatherPowerup = worldController.level.bunnyHead.timeLeftFeatherPowerup;
+		if (timeLeftFeatherPowerup > 0) {
+			// Start icon fade in/out if the time left is less than 4 seconds.
+			if (timeLeftFeatherPowerup < 4) {
+				// Fade interval is set to 5 changes per second.
+				if (((int)(timeLeftFeatherPowerup * 5) % 2) != 0) {
+					batch.setColor(1, 1, 1, 0.5f);
+				}
+			}
+			batch.draw(Assets.instance.feather.feather,
+					x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+			batch.setColor(1, 1, 1, 1);
+			Assets.instance.fonts.defaultSmall.draw(batch,
+					"" + (int)timeLeftFeatherPowerup, x + 60, y + 57);
+		}
+	}
+
+	/**
 	 * Add the current frames per second in the bottom right corner of the screen.
 	 * Will display in green, yellow, or red text, depending upon performance.
 	 * @param batch
@@ -105,6 +131,21 @@ public class WorldRenderer implements Disposable {
 		}
 		fpsFont.draw(batch, "FPS: " + fps, x, y);
 		fpsFont.setColor(1, 1, 1, 1);
+	}
+
+	/**
+	 * Add a game over message to the center of the screen.
+	 * @param batch
+	 */
+	private void renderGuiGameOverMessage(SpriteBatch batch) {
+		if (worldController.isGameOver()) {
+			float x = cameraGUI.viewportWidth / 2;
+			float y = cameraGUI.viewportHeight / 2;
+			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
+			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+			fontGameOver.drawMultiLine(batch, "GAME OVER", x, y, 0, BitmapFont.HAlignment.CENTER);
+			fontGameOver.setColor(1, 1, 1, 1);
+		}
 	}
 
 	public void resize(int width, int height) {
