@@ -48,13 +48,37 @@ public class WorldController extends InputAdapter {
 	private void initLevel() {
 		score = 0;
 		level = new Level(Constants.LEVEL_01);
+		cameraHelper.setTarget(level.bunnyHead);
 	}
 
 	public void update(float deltaTime) {
 		handleDebugInput(deltaTime);
+		handleGameInput(deltaTime);
 		level.update(deltaTime);
 		testCollisions();
 		cameraHelper.update(deltaTime);
+	}
+
+	private void handleGameInput(float deltaTime) {
+		if (cameraHelper.hasTarget(level.bunnyHead)) {
+			if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+				level.bunnyHead.velocity.x = -level.bunnyHead.terminalVelocity.x;
+			} else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+				level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+			} else {
+				// Execute auto-forward movement on non-desktop platforms.
+				if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
+					level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+				}
+			}
+
+			// Jump.
+			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+				level.bunnyHead.setJumping(true);
+			} else {
+				level.bunnyHead.setJumping(false);
+			}
+		}
 	}
 
 	private void handleDebugInput(float deltaTime) {
@@ -62,42 +86,44 @@ public class WorldController extends InputAdapter {
 			return;
 		}
 
-		// Camera moving controls.
-		float camMoveSpeed = 5 * deltaTime;
-		float camMoveSpeedAccelerationFactor = 5;
-		if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-			camMoveSpeed *= camMoveSpeedAccelerationFactor;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			moveCamera(-camMoveSpeed, 0);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			moveCamera(camMoveSpeed, 0);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			moveCamera(0, camMoveSpeed);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			moveCamera(0, -camMoveSpeed);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-			cameraHelper.setPosition(0, 0);
-		}
+		if (!cameraHelper.hasTarget(level.bunnyHead)) {
+			// Camera moving controls.
+			float camMoveSpeed = 5 * deltaTime;
+			float camMoveSpeedAccelerationFactor = 5;
+			if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+				camMoveSpeed *= camMoveSpeedAccelerationFactor;
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+				moveCamera(-camMoveSpeed, 0);
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+				moveCamera(camMoveSpeed, 0);
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+				moveCamera(0, camMoveSpeed);
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+				moveCamera(0, -camMoveSpeed);
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+				cameraHelper.setPosition(0, 0);
+			}
 
-		// Camera zoom controls.
-		float camZoomSpeed = 1 * deltaTime;
-		float camZoomSpeedAccelerationFactor = 5;
-		if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-			camZoomSpeed *= camZoomSpeedAccelerationFactor;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.COMMA)) {
-			cameraHelper.addZoom(camZoomSpeed);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.PERIOD)) {
-			cameraHelper.addZoom(-camZoomSpeed);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.SLASH)) {
-			cameraHelper.setZoom(1);
+			// Camera zoom controls.
+			float camZoomSpeed = 1 * deltaTime;
+			float camZoomSpeedAccelerationFactor = 5;
+			if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+				camZoomSpeed *= camZoomSpeedAccelerationFactor;
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.COMMA)) {
+				cameraHelper.addZoom(camZoomSpeed);
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.PERIOD)) {
+				cameraHelper.addZoom(-camZoomSpeed);
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.SLASH)) {
+				cameraHelper.setZoom(1);
+			}
 		}
 	}
 
@@ -113,6 +139,10 @@ public class WorldController extends InputAdapter {
 			// Reset game world.
 			init();
 			Gdx.app.debug(TAG, "Game world reset");
+		} else if (keycode == Input.Keys.ENTER) {
+			// Toggle camera follow.
+			cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
+			Gdx.app.debug(TAG, "Camera follow enabled: " + cameraHelper.hasTarget());
 		}
 		return false;
 	}
