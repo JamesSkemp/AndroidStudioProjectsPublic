@@ -24,9 +24,26 @@ public class Constants {
 	public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
 
 	/**
-	 * Location of texture atlas description file.
+	 * Location of texture atlas description file for the game.
 	 */
 	public static final String TEXTURE_ATLAS_OBJECTS = "images/canyonbunny.pack";
+
+	/**
+	 *
+	 */
+	public static final String TEXTURE_ATLAS_UI = "ui/canyonbunny-ui.pack";
+	/**
+	 *
+	 */
+	public static final String TEXTURE_ATLAS_LIBGDX_UI = "ui/uiskin.atlas";
+	/**
+	 *
+	 */
+	public static final String SKIN_LIBGDX_UI = "ui/uiskin.json";
+	/**
+	 *
+	 */
+	public static final String SKIN_CANYONBUNNY_UI = "ui/canyonbunny-ui.json";
 
 	/**
 	 * Location of the first level map.
