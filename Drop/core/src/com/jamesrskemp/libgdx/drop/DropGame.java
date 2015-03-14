@@ -9,8 +9,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.Iterator;
 
 public class DropGame extends ApplicationAdapter {
 	private Texture dropImage;
@@ -22,6 +27,10 @@ public class DropGame extends ApplicationAdapter {
 	private SpriteBatch batch;
 
 	private Rectangle bucket;
+
+	private Array<Rectangle> raindrops;
+	// Time will be stored in nanoseconds.
+	private long lastDropTime;
 
 	@Override
 	public void create () {
@@ -48,6 +57,9 @@ public class DropGame extends ApplicationAdapter {
 		bucket.y = 20;
 		bucket.width = 64;
 		bucket.height = 64;
+
+		raindrops = new Array<Rectangle>();
+		spawnRaindrop();
 	}
 
 	@Override
@@ -62,6 +74,9 @@ public class DropGame extends ApplicationAdapter {
 
 		batch.begin();
 		batch.draw(bucketImage, bucket.x, bucket.y);
+		for (Rectangle raindrop : raindrops) {
+			batch.draw(dropImage, raindrop.x, raindrop.y);
+		}
 		batch.end();
 
 		// Move the bucket on the x-axis where the user touches/clicks.
@@ -86,5 +101,29 @@ public class DropGame extends ApplicationAdapter {
 		if (bucket.x > 800 - 64) {
 			bucket.x = 800 - 64;
 		}
+
+		// That's 1 second.
+		if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
+			spawnRaindrop();
+		}
+
+		Iterator<Rectangle> iterator = raindrops.iterator();
+		while (iterator.hasNext()) {
+			Rectangle raindrop = iterator.next();
+			raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
+			if (raindrop.y + 64 < 0) {
+				iterator.remove();
+			}
+		}
+	}
+
+	private void spawnRaindrop() {
+		Rectangle raindrop = new Rectangle();
+		raindrop.x = MathUtils.random(0, 800 - 64);
+		raindrop.y = 480;
+		raindrop.width = 64;
+		raindrop.height = 64;
+		raindrops.add(raindrop);
+		lastDropTime = TimeUtils.nanoTime();
 	}
 }
