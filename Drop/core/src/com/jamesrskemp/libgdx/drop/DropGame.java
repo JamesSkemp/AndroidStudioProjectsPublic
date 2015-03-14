@@ -27,6 +27,7 @@ public class DropGame extends Game {
 		batch = new SpriteBatch();
 		// Default font is Arial.
 		font = new BitmapFont();
+		this.setScreen(new MainMenuScreen(this));
 	}
 
 	public void render() {
@@ -92,9 +93,9 @@ public class DropGame extends Game {
 		// Good practice to update the camera once per frame.
 		camera.update();
 
-		batch.setProjectionMatrix(camera.combined);
+		game.batch.setProjectionMatrix(camera.combined);
 
-		batch.begin();
+		game.batch.begin();
 		batch.draw(bucketImage, bucket.x, bucket.y);
 		for (Rectangle raindrop : raindrops) {
 			batch.draw(dropImage, raindrop.x, raindrop.y);
