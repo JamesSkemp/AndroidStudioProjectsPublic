@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 public class DropGame extends ApplicationAdapter {
 	private Texture dropImage;
@@ -61,5 +62,13 @@ public class DropGame extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(bucketImage, bucket.x, bucket.y);
 		batch.end();
+
+		// Move the bucket on the x-axis where the user touches/clicks.
+		if (Gdx.input.isTouched()) {
+			Vector3 touchPosition = new Vector3();
+			touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			camera.unproject(touchPosition);
+			bucket.x = touchPosition.x - 64 / 2;
+		}
 	}
 }
