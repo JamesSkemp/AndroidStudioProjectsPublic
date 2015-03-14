@@ -1,6 +1,7 @@
 package com.jamesrskemp.libgdx.canyonbunny.game;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -15,6 +16,7 @@ import com.jamesrskemp.libgdx.canyonbunny.game.objects.BunnyHead;
 import com.jamesrskemp.libgdx.canyonbunny.game.objects.Feather;
 import com.jamesrskemp.libgdx.canyonbunny.game.objects.GoldCoin;
 import com.jamesrskemp.libgdx.canyonbunny.game.objects.Rock;
+import com.jamesrskemp.libgdx.canyonbunny.game.screens.MenuScreen;
 import com.jamesrskemp.libgdx.canyonbunny.util.CameraHelper;
 import com.jamesrskemp.libgdx.canyonbunny.util.Constants;
 
@@ -23,6 +25,8 @@ import com.jamesrskemp.libgdx.canyonbunny.util.Constants;
  */
 public class WorldController extends InputAdapter {
 	private static final String TAG = WorldController.class.getName();
+
+	private Game game;
 
 	public CameraHelper cameraHelper;
 
@@ -36,7 +40,8 @@ public class WorldController extends InputAdapter {
 	private Rectangle r1 = new Rectangle();
 	private Rectangle r2 = new Rectangle();
 
-	public WorldController() {
+	public WorldController(Game game) {
+		this.game = game;
 		init();
 	}
 
@@ -59,7 +64,7 @@ public class WorldController extends InputAdapter {
 		if (isGameOver()) {
 			timeLeftGameOverDelay -= deltaTime;
 			if (timeLeftGameOverDelay < 0) {
-				init();
+				backToMenu();
 			}
 		} else {
 			handleGameInput(deltaTime);
@@ -161,6 +166,8 @@ public class WorldController extends InputAdapter {
 			// Toggle camera follow.
 			cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
 			Gdx.app.debug(TAG, "Camera follow enabled: " + cameraHelper.hasTarget());
+		} else if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+			backToMenu();
 		}
 		return false;
 	}
@@ -250,5 +257,9 @@ public class WorldController extends InputAdapter {
 	public boolean isPlayerInWater() {
 		// Technically water is at 0, but this adds a bit of pause.
 		return level.bunnyHead.position.y < -5;
+	}
+
+	private void backToMenu() {
+		game.setScreen(new MenuScreen(game));
 	}
 }
