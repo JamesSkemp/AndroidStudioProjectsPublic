@@ -132,11 +132,36 @@ public class MenuScreen extends AbstractGameScreen {
 
 	private Table buildObjectsLayer() {
 		Table layer = new Table();
+
+		imgCoins = new Image(skinCanyonBunny, "coins");
+		layer.addActor(imgCoins);
+		imgCoins.setPosition(135, 80);
+
+		imgBunny = new Image(skinCanyonBunny, "bunny");
+		layer.addActor(imgBunny);
+		imgBunny.setPosition(355, 40);
+
 		return layer;
 	}
 
 	private Table buildLogosLayer() {
 		Table layer = new Table();
+
+		layer.left().top();
+		imgLogo = new Image(skinCanyonBunny, "logo");
+		// Adds the image in a column. In this case the first column.
+		layer.add(imgLogo);
+
+		// Starts a new row and expand empty space in the y-axis.
+		layer.row().expandY();
+
+		imgInfo = new Image(skinCanyonBunny, "info");
+		// Since we just created a new row, adds to the first column.
+		layer.add(imgInfo).bottom();
+
+		if (debugEnabled) {
+			layer.debug();
+		}
 		return layer;
 	}
 
