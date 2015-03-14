@@ -114,6 +114,10 @@ public class DropGame extends ApplicationAdapter {
 			if (raindrop.y + 64 < 0) {
 				iterator.remove();
 			}
+			if (raindrop.overlaps(bucket)) {
+				dropSound.play();
+				iterator.remove();
+			}
 		}
 	}
 
