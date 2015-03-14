@@ -1,7 +1,7 @@
 Drop
 ===========================
 
-This is my implementation of the libGDX simple tutorial - <a href="https://github.com/libgdx/libgdx/wiki/A-simple-game">A simple game</a>.
+This is my implementation of the libGDX simple tutorial - <a href="https://github.com/libgdx/libgdx/wiki/A-simple-game">A simple game</a> and <a href="https://github.com/libgdx/libgdx/wiki/Extending-the-simple-game">Extending the simiple game</a>.
 
 In case it changes, they, and I, took the assets from:
 
