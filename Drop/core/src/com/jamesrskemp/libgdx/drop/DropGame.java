@@ -2,6 +2,7 @@ package com.jamesrskemp.libgdx.drop;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -65,10 +66,25 @@ public class DropGame extends ApplicationAdapter {
 
 		// Move the bucket on the x-axis where the user touches/clicks.
 		if (Gdx.input.isTouched()) {
+			// Vector3 instantiation here is a bad practice. Extra GC work.
 			Vector3 touchPosition = new Vector3();
 			touchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touchPosition);
 			bucket.x = touchPosition.x - 64 / 2;
+		}
+
+		// Move at a consistent 200 units, with no acceleration.
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			bucket.x -= 200 * Gdx.graphics.getDeltaTime();
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			bucket.x += 200 * Gdx.graphics.getDeltaTime();
+		}
+		if (bucket.x < 0) {
+			bucket.x = 0;
+		}
+		if (bucket.x > 800 - 64) {
+			bucket.x = 800 - 64;
 		}
 	}
 }
