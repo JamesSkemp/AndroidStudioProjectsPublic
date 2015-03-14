@@ -130,4 +130,13 @@ public class DropGame extends ApplicationAdapter {
 		raindrops.add(raindrop);
 		lastDropTime = TimeUtils.nanoTime();
 	}
+
+	@Override
+	public void dispose() {
+		dropImage.dispose();
+		bucketImage.dispose();
+		dropSound.dispose();
+		rainMusic.dispose();
+		batch.dispose();
+	}
 }
