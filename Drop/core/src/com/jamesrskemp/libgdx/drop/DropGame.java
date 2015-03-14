@@ -31,10 +31,12 @@ public class DropGame extends Game {
 	}
 
 	public void render() {
+		// The screen set in the create method won't be drawn without this call.
 		super.render();
 	}
 
 	public void dispose() {
+		super.dispose();
 		batch.dispose();
 		font.dispose();
 	}
