@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
 	private Array<Rectangle> raindrops;
 	// Time will be stored in nanoseconds.
 	private long lastDropTime;
+	int dropsGrathered;
 
 	public GameScreen(final DropGame game) {
 		this.game = game;
@@ -47,7 +48,6 @@ public class GameScreen implements Screen {
 		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("28283__acclivity__undertreeinrain.mp3"));
 
 		rainMusic.setLooping(true);
-		rainMusic.play();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
@@ -75,11 +75,6 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void show() {
-
-	}
-
-	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -90,6 +85,7 @@ public class GameScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
+		game.font.draw(game.batch, "Drops collected: " + dropsGrathered, 0, 480);
 		game.batch.draw(bucketImage, bucket.x, bucket.y);
 		for (Rectangle raindrop : raindrops) {
 			game.batch.draw(dropImage, raindrop.x, raindrop.y);
@@ -132,6 +128,7 @@ public class GameScreen implements Screen {
 				iterator.remove();
 			}
 			if (raindrop.overlaps(bucket)) {
+				dropsGrathered++;
 				dropSound.play();
 				iterator.remove();
 			}
@@ -151,6 +148,11 @@ public class GameScreen implements Screen {
 	@Override
 	public void resume() {
 
+	}
+
+	@Override
+	public void show() {
+		rainMusic.play();
 	}
 
 	@Override
