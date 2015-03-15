@@ -79,10 +79,6 @@ public class MenuScreen extends AbstractGameScreen {
 		stage.act(deltaTime);
 		stage.draw();
 		stage.setDebugAll(true);
-
-		if (Gdx.input.isTouched()) {
-			game.setScreen(new GameScreen(game));
-		}
 	}
 
 	@Override
@@ -132,7 +128,7 @@ public class MenuScreen extends AbstractGameScreen {
 		stack.add(layerObjects);
 		stack.add(layerLogos);
 		stack.add(layerControls);
-		stack.addActor(layerOptionsWindow);
+		stage.addActor(layerOptionsWindow);
 	}
 
 	private Table buildBackgroundLayer() {
@@ -210,8 +206,25 @@ public class MenuScreen extends AbstractGameScreen {
 	}
 
 	private Table buildOptionsWindowLayer() {
-		Table layer = new Table();
-		return layer;
+		winOptions = new Window("Options", skinLibgdx);
+		winOptions.add(buildOptWinAudioSettings()).row();
+		winOptions.add(buildOptWinSkinSelection()).row();
+		winOptions.add(buildOptWinDebug()).row();
+		winOptions.add(buildOptWinButtons()).pad(10, 0, 10, 0);
+
+		// Add a slight transparency to the window.
+		winOptions.setColor(1, 1, 1, 0.8f);
+		// Hidden by default.
+		winOptions.setVisible(false);
+		if (debugEnabled) {
+			winOptions.debug();
+		}
+		//Let TableLayout recalculate widget sizes and positions.
+		winOptions.pack();
+		// Place window in bottom right corner.
+		winOptions.setPosition(Constants.VIEWPORT_GUI_WIDTH - winOptions.getWidth() - 50, 50);
+
+		return winOptions;
 	}
 
 	private void onPlayClicked() {
@@ -219,6 +232,10 @@ public class MenuScreen extends AbstractGameScreen {
 	}
 
 	private void onOptionsClicked() {
+		loadSettings();
+		btnMenuPlay.setVisible(false);
+		btnMenuOptions.setVisible(false);
+		winOptions.setVisible(true);
 	}
 
 	private void loadSettings() {
