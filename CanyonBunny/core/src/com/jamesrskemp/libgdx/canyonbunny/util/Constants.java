@@ -29,9 +29,14 @@ public class Constants {
 	public static final String TEXTURE_ATLAS_OBJECTS = "images/canyonbunny.pack";
 
 	/**
-	 *
+	 * Used to create the main menu screen.
+	 */
+	public static final String SKIN_CANYONBUNNY_UI = "ui/canyonbunny-ui.json";
+	/**
+	 * Used to create the main menu screen.
 	 */
 	public static final String TEXTURE_ATLAS_UI = "ui/canyonbunny-ui.pack";
+
 	/**
 	 *
 	 */
@@ -40,10 +45,11 @@ public class Constants {
 	 *
 	 */
 	public static final String SKIN_LIBGDX_UI = "ui/uiskin.json";
+
 	/**
-	 *
+	 * Name of the preferences file.
 	 */
-	public static final String SKIN_CANYONBUNNY_UI = "ui/canyonbunny-ui.json";
+	public static final String PREFERENCES = "canyonbunny.prefs";
 
 	/**
 	 * Location of the first level map.
