@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.jamesrskemp.libgdx.canyonbunny.util.Constants;
 
@@ -146,8 +148,8 @@ public class MenuScreen extends AbstractGameScreen {
 
 	private Table buildLogosLayer() {
 		Table layer = new Table();
-
 		layer.left().top();
+
 		imgLogo = new Image(skinCanyonBunny, "logo");
 		// Adds the image in a column. In this case the first column.
 		layer.add(imgLogo);
@@ -167,11 +169,45 @@ public class MenuScreen extends AbstractGameScreen {
 
 	private Table buildControlsLayer() {
 		Table layer = new Table();
+		layer.right().bottom();
+
+		// Buttons will respond to the change event instead of click event, as click still triggers on disabled controls.
+
+		btnMenuPlay = new Button(skinCanyonBunny, "play");
+		layer.add(btnMenuPlay);
+		btnMenuPlay.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				onPlayClicked();
+			}
+		});
+
+		layer.row();
+
+		btnMenuOptions = new Button(skinCanyonBunny, "options");
+		layer.add(btnMenuOptions);
+		btnMenuOptions.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				onOptionsClicked();
+			}
+		});
+
+		if (debugEnabled) {
+			layer.debug();
+		}
 		return layer;
 	}
 
 	private Table buildOptionsWindowLayer() {
 		Table layer = new Table();
 		return layer;
+	}
+
+	private void onPlayClicked() {
+		game.setScreen(new GameScreen(game));
+	}
+
+	private void onOptionsClicked() {
 	}
 }
