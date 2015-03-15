@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.jamesrskemp.libgdx.canyonbunny.util.CharacterSkin;
 import com.jamesrskemp.libgdx.canyonbunny.util.Constants;
 
 /**
@@ -43,7 +45,7 @@ public class MenuScreen extends AbstractGameScreen {
 	private Slider sldSound;
 	private CheckBox chkMusic;
 	private Slider sldMusic;
-	//private SelectBox<CharacterSkin> selCharSkin;
+	private SelectBox<CharacterSkin> selCharSkin;
 	private Image imgCharSkin;
 	private CheckBox chkShowFpsCounter;
 
