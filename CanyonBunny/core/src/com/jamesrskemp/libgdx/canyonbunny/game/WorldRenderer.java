@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.jamesrskemp.libgdx.canyonbunny.util.Constants;
+import com.jamesrskemp.libgdx.canyonbunny.util.GamePreferences;
 
 /**
  * Created by James on 3/10/2015.
@@ -54,7 +55,9 @@ public class WorldRenderer implements Disposable {
 		renderGuiScore(batch);
 		renderGuiExtraLives(batch);
 		renderGuiFeatherPowerup(batch);
-		renderGuiFpsCount(batch);
+		if (GamePreferences.instance.showFpsCounter) {
+			renderGuiFpsCount(batch);
+		}
 		renderGuiGameOverMessage(batch);
 		batch.end();
 	}
