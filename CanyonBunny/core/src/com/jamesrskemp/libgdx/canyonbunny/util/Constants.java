@@ -38,13 +38,13 @@ public class Constants {
 	public static final String TEXTURE_ATLAS_UI = "ui/canyonbunny-ui.pack";
 
 	/**
-	 *
-	 */
-	public static final String TEXTURE_ATLAS_LIBGDX_UI = "ui/uiskin.atlas";
-	/**
-	 *
+	 * Standard ligGDX example skin.
 	 */
 	public static final String SKIN_LIBGDX_UI = "ui/uiskin.json";
+	/**
+	 * Standard ligGDX example skin texture atlas.
+	 */
+	public static final String TEXTURE_ATLAS_LIBGDX_UI = "ui/uiskin.atlas";
 
 	/**
 	 * Name of the preferences file.
