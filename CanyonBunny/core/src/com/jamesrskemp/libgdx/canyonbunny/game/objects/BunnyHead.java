@@ -1,5 +1,6 @@
 package com.jamesrskemp.libgdx.canyonbunny.game.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jamesrskemp.libgdx.canyonbunny.game.Assets;
@@ -65,7 +66,7 @@ public class BunnyHead extends AbstractGameObject {
 				break;
 			case JUMP_RISING:
 				if (!jumpKeyPressed) {
-					jumpState = JUMP_STATE.FALLING;
+					jumpState = JUMP_STATE.JUMP_FALLING;
 				}
 				break;
 			case FALLING:
@@ -153,6 +154,9 @@ public class BunnyHead extends AbstractGameObject {
 				rotation,
 				reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
 				viewDirection == VIEW_DIRECTION.LEFT, false);
+
+		//Gdx.app.log(TAG, "P <" + position.x + "," + position.y + ">");
+		//Gdx.app.log(TAG, "V <" + velocity.x + "," + velocity.y + ">");
 
 		// Reset color to white.
 		batch.setColor(1, 1, 1, 1);

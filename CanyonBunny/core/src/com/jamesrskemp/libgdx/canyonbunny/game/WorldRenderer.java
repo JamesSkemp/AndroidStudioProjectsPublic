@@ -146,7 +146,7 @@ public class WorldRenderer implements Disposable {
 			float y = cameraGUI.viewportHeight / 2;
 			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
 			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
-			fontGameOver.drawMultiLine(batch, "GAME OVER", x, y, 0, BitmapFont.HAlignment.CENTER);
+			fontGameOver.drawMultiLine(batch, "GAME OVER", x, y, 1, BitmapFont.HAlignment.CENTER);
 			fontGameOver.setColor(1, 1, 1, 1);
 		}
 	}
