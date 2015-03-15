@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.jamesrskemp.libgdx.canyonbunny.util.CharacterSkin;
 import com.jamesrskemp.libgdx.canyonbunny.util.Constants;
+import com.jamesrskemp.libgdx.canyonbunny.util.GamePreferences;
 
 /**
  * Created by James on 3/14/2015.
@@ -29,6 +30,7 @@ public class MenuScreen extends AbstractGameScreen {
 
 	private Stage stage;
 	private Skin skinCanyonBunny;
+	private Skin skinLibgdx;
 	// Menu.
 	private Image imgBackground;
 	private Image imgLogo;
@@ -211,5 +213,45 @@ public class MenuScreen extends AbstractGameScreen {
 	}
 
 	private void onOptionsClicked() {
+	}
+
+	private void loadSettings() {
+		GamePreferences prefs = GamePreferences.instance;
+		prefs.load();
+		chkSound.setChecked(prefs.sound);
+		sldSound.setValue(prefs.volSound);
+		chkMusic.setChecked(prefs.music);
+		sldMusic.setValue(prefs.volMusic);
+		selCharSkin.setSelectedIndex(prefs.charSkin);
+		onCharSkinSelected(prefs.charSkin);
+		chkShowFpsCounter.setChecked(prefs.showFpsCounter);
+	}
+
+	private void saveSettings() {
+		GamePreferences prefs = GamePreferences.instance;
+		prefs.sound = chkSound.isChecked();
+		prefs.volSound = sldSound.getValue();
+		prefs.music = chkMusic.isChecked();
+		prefs.volMusic = sldMusic.getValue();
+		prefs.charSkin = selCharSkin.getSelectedIndex();
+		prefs.showFpsCounter = chkShowFpsCounter.isChecked();
+
+		prefs.save();
+	}
+
+	private void onCharSkinSelected(int index) {
+		CharacterSkin skin = CharacterSkin.values()[index];
+		imgCharSkin.setColor(skin.getColor());
+	}
+
+	private void onSaveClicked() {
+		saveSettings();
+		onCancelClicked();
+	}
+
+	private void onCancelClicked() {
+		btnMenuPlay.setVisible(true);
+		btnMenuOptions.setVisible(true);
+		winOptions.setVisible(false);
 	}
 }
