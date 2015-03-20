@@ -6,11 +6,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 
 public class TiledExample extends ApplicationAdapter {
 	SpriteBatch batch;
 	OrthographicCamera camera;
 
+	TiledMap map;
+	TiledMapTileLayer layer;
+	IsometricTiledMapRenderer renderer;
 	Texture img;
 	
 	@Override
@@ -18,6 +25,15 @@ public class TiledExample extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
+		map = new TmxMapLoader().load("SimpleCityTutorialMap.tmx");
+		layer = (TiledMapTileLayer)map.getLayers().get(0);
+
+		renderer = new IsometricTiledMapRenderer(map, 0.5f, batch);
+		renderer.setView(camera);
+
+		Gdx.app.log(TiledExample.class.getName(), "Map: <" + layer.getWidth() + "," + layer.getHeight() + ">");
+		Gdx.app.log(TiledExample.class.getName(), "Tile: <" + layer.getTileWidth() + "," + layer.getTileHeight() + ">");
+
 		//img = new Texture("badlogic.jpg");
 	}
 
@@ -28,14 +44,16 @@ public class TiledExample extends ApplicationAdapter {
 
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-		
+
+		renderer.render();
 		batch.begin();
-		//batch.draw(img, 0, 0);
+		//
 		batch.end();
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
+		map.dispose();
 	}
 }
