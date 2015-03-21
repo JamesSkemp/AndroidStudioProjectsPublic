@@ -39,8 +39,9 @@ public class TiledExample extends ApplicationAdapter {
 		cameraController = new OrthoCamController(camera);
 
 		InputMultiplexer inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.addProcessor(cameraController);
+		// Gesture detector should be first.
 		inputMultiplexer.addProcessor(new GestureDetector(cameraController));
+		inputMultiplexer.addProcessor(cameraController);
 		Gdx.input.setInputProcessor(inputMultiplexer);
 
 		map = new TmxMapLoader().load("SimpleCityTutorialMap.tmx");

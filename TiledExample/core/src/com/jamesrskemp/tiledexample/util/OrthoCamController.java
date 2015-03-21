@@ -21,9 +21,13 @@ public class OrthoCamController implements InputProcessor, GestureDetector.Gestu
 	final Vector3 curr = new Vector3();
 	final Vector3 last = new Vector3(-1, -1, -1);
 	final Vector3 delta = new Vector3();
+	final Vector3 selectedPosition = new Vector3();
+
+	float initialZoomScale = 1;
 
 	public OrthoCamController (OrthographicCamera camera) {
 		this.camera = camera;
+		initialZoomScale = camera.zoom;
 	}
 
 	@Override
@@ -50,14 +54,16 @@ public class OrthoCamController implements InputProcessor, GestureDetector.Gestu
 	public boolean touchUp (int x, int y, int pointer, int button) {
 		Gdx.app.log(TAG, "touchUp");
 		last.set(-1, -1, -1);
+		initialZoomScale = camera.zoom;
+		Gdx.app.log(TAG, "Zoom level: " + initialZoomScale);
 		return false;
 	}
 
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
 		Gdx.app.log(TAG, "zoom");
-		// TODO
-		return false;
+		camera.zoom = initialZoomScale * initialDistance / distance;
+		return true;
 	}
 
 	@Override
@@ -77,6 +83,9 @@ public class OrthoCamController implements InputProcessor, GestureDetector.Gestu
 	@Override
 	public boolean longPress(float x, float y) {
 		Gdx.app.log(TAG, "longPress");
+		camera.unproject(selectedPosition.set(x, y, 0));
+		Gdx.app.log(TAG, "Long press position (camera): <" + x + "," + y + ">");
+		Gdx.app.log(TAG, "Long press position (world): <" + selectedPosition.x + "," + selectedPosition.y + ">");
 		// TODO
 		return false;
 	}
@@ -84,7 +93,9 @@ public class OrthoCamController implements InputProcessor, GestureDetector.Gestu
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		Gdx.app.log(TAG, "touchDown");
-		Gdx.app.log(TAG, "Touch down: <" + x + "," + y + ">");
+		camera.unproject(selectedPosition.set(x, y, 0));
+		Gdx.app.log(TAG, "Touch down (camera): <" + x + "," + y + ">");
+		Gdx.app.log(TAG, "Touch down (world): <" + selectedPosition.x + "," + selectedPosition.y + ">");
 		// TODO
 		return false;
 	}
@@ -92,6 +103,9 @@ public class OrthoCamController implements InputProcessor, GestureDetector.Gestu
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 		Gdx.app.log(TAG, "tap");
+		camera.unproject(selectedPosition.set(x, y, 0));
+		Gdx.app.log(TAG, "Tap position (camera): <" + x + "," + y + ">");
+		Gdx.app.log(TAG, "Tap position (world): <" + selectedPosition.x + "," + selectedPosition.y + ">");
 		// TODO
 		return false;
 	}
