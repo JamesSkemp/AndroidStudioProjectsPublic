@@ -2,15 +2,17 @@ package com.jamesrskemp.tiledexample.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 /**
  * Created by James on 3/20/2015.
  */
-public class OrthoCamController extends InputAdapter {
+public class OrthoCamController implements InputProcessor {
 	// was extending from GestureDetector.GestureAdapter
 	// InputAdapter
 	private static final String TAG = OrthoCamController.class.getName();
@@ -119,6 +121,42 @@ public class OrthoCamController extends InputAdapter {
 			camera.position.y = 0;
 		}
 		//last.set(x, y, 0);
+		return false;
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		Gdx.app.log(TAG, "keyDown");
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		Gdx.app.log(TAG, "keyUp");
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		Gdx.app.log(TAG, "keyTyped");
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		Gdx.app.log(TAG, "touchDown");
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		Gdx.app.log(TAG, "mouseMoved");
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		Gdx.app.log(TAG, "scrolled");
 		return false;
 	}
 }
