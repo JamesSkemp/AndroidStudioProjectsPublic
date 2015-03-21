@@ -2,6 +2,7 @@ package com.jamesrskemp.tiledexample;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -36,8 +37,11 @@ public class TiledExample extends ApplicationAdapter {
 		camera.setToOrtho(false, cellsInRow * screenWidth / screenHeight, cellsInRow);
 
 		cameraController = new OrthoCamController(camera);
-		//Gdx.input.setInputProcessor(new GestureDetector(cameraController));
-		Gdx.input.setInputProcessor(cameraController);
+
+		InputMultiplexer inputMultiplexer = new InputMultiplexer();
+		inputMultiplexer.addProcessor(cameraController);
+		inputMultiplexer.addProcessor(new GestureDetector(cameraController));
+		Gdx.input.setInputProcessor(inputMultiplexer);
 
 		map = new TmxMapLoader().load("SimpleCityTutorialMap.tmx");
 		layer = (TiledMapTileLayer)map.getLayers().get(0);
