@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class OrthoCamController extends InputAdapter {
 	// was extending from GestureDetector.GestureAdapter
+	// InputAdapter
 	private static final String TAG = OrthoCamController.class.getName();
 
 	final OrthographicCamera camera;
@@ -108,6 +109,7 @@ public class OrthoCamController extends InputAdapter {
 			camera.position.add(delta.x, delta.y, 0);
 		}*/
 		//camera.unproject(delta.set(deltaX, deltaY, 0));
+		//camera.project(delta.set(deltaX, deltaY, 0));
 		camera.position.add(-delta.x * camera.zoom, delta.y * camera.zoom, 0);
 
 		if (camera.position.x > 1000 || camera.position.x < -1000) {
