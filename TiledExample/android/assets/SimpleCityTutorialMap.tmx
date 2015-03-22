@@ -2,12 +2,21 @@
 <map version="1.0" orientation="isometric" renderorder="left-up" width="5" height="5" tilewidth="128" tileheight="64" nextobjectid="1">
  <tileset firstgid="1" name="City - Roads" tilewidth="133" tileheight="123">
   <tile id="0">
+   <properties>
+    <property name="exits" value="n,s"/>
+   </properties>
    <image width="132" height="101" source="tiles/cityTiles_003.png"/>
   </tile>
   <tile id="1">
+   <properties>
+    <property name="exits" value="n"/>
+   </properties>
    <image width="132" height="101" source="tiles/cityTiles_021.png"/>
   </tile>
   <tile id="2">
+   <properties>
+    <property name="exits" value="s,w"/>
+   </properties>
    <image width="132" height="101" source="tiles/cityTiles_028.png"/>
   </tile>
   <tile id="3">
@@ -46,15 +55,24 @@
  </tileset>
  <tileset firstgid="15" name="City - Water" tilewidth="132" tileheight="101">
   <tile id="0">
+   <properties>
+    <property name="exits" value="n,s"/>
+   </properties>
    <image width="132" height="101" source="tiles/cityTiles_038.png"/>
   </tile>
   <tile id="1">
    <image width="132" height="101" source="tiles/cityTiles_043.png"/>
   </tile>
   <tile id="2">
+   <properties>
+    <property name="exits" value="s"/>
+   </properties>
    <image width="132" height="101" source="tiles/cityTiles_045.png"/>
   </tile>
   <tile id="3">
+   <properties>
+    <property name="exits" value="n"/>
+   </properties>
    <image width="132" height="101" source="tiles/cityTiles_060.png"/>
   </tile>
  </tileset>

@@ -12,7 +12,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.jamesrskemp.tiledexample.util.OrthoCamController;
+
+import java.util.Iterator;
 
 public class TiledExample extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -24,7 +27,12 @@ public class TiledExample extends ApplicationAdapter {
 	IsometricTiledMapRenderer renderer;
 	//OrthogonalTiledMapRenderer renderer2;
 	Texture img;
-	
+
+	/**
+	 * 0,0 = west | 0,x-1 = north | x-1,0 = south
+	 */
+	Vector2 centeredCameraWorldPosition = new Vector2();
+
 	@Override
 	public void create () {
 		float screenWidth = Gdx.graphics.getWidth();
@@ -53,11 +61,48 @@ public class TiledExample extends ApplicationAdapter {
 		camera.position.set(layer.getWidth() * layer.getTileWidth() / 2, layer.getHeight() * layer.getTileHeight() / 2, 0);
 		Gdx.app.log(TiledExample.class.getName(), "Camera: <" + camera.position.x + "," + camera.position.y + ">");
 
+		Gdx.app.log(TiledExample.class.getName(), "Mod width: " + layer.getWidth() % 2);
+		Gdx.app.log(TiledExample.class.getName(), "Mod height: " + layer.getHeight() % 2);
+
+		Gdx.app.log(TiledExample.class.getName(), "Half width: " + layer.getWidth() / 2);
+		Gdx.app.log(TiledExample.class.getName(), "Half height: " + layer.getHeight() / 2);
+
+		// x and y will between 0 and tiles - 1. So we need to account for the width of a tile.
+		centeredCameraWorldPosition.x = layer.getWidth() / 2 * layer.getTileWidth();
+		centeredCameraWorldPosition.y = layer.getHeight() / 2 * layer.getTileHeight();
+		if (layer.getWidth() % 2 == 1) {
+			centeredCameraWorldPosition.x += layer.getTileWidth() / 2;
+		}
+		if (layer.getHeight() % 2 == 1) {
+			centeredCameraWorldPosition.y += layer.getTileHeight() / 2;
+		}
+		// This puts the south-most tile at the bottom of the camera view.
+		centeredCameraWorldPosition.y = layer.getTileHeight() / 2;
+		// This puts the south-most tile top (and bit of the innards) at the bottom of the camera view.
+		centeredCameraWorldPosition.y = layer.getTileHeight();
+
+		Gdx.app.log(TiledExample.class.getName(), "Center cell: <" + centeredCameraWorldPosition.x + "," + centeredCameraWorldPosition.y + ">");
+		camera.position.set(
+				centeredCameraWorldPosition.x,
+				centeredCameraWorldPosition.y,
+				0);
+		Gdx.app.log(TiledExample.class.getName(), "Camera: <" + camera.position.x + "," + camera.position.y + ">");
+
+		TiledMapTileLayer.Cell centerCell = layer.getCell(0,2);
+		Iterator<String> iterator = centerCell.getTile().getProperties().getKeys();
+		String keyName;
+		while (iterator.hasNext()) {
+			keyName = iterator.next();
+			Gdx.app.log(TiledExample.class.getName(), "Key: " + keyName);
+		}
+		//centerCell.getTile().getProperties().getKeys();
+
 		renderer = new IsometricTiledMapRenderer(map, 1f, batch);
 		//renderer2 = new OrthogonalTiledMapRenderer(map, batch);
 
 		Gdx.app.log(TiledExample.class.getName(), "Map: <" + layer.getWidth() + "," + layer.getHeight() + ">");
 		Gdx.app.log(TiledExample.class.getName(), "Tile: <" + layer.getTileWidth() + "," + layer.getTileHeight() + ">");
+		Gdx.app.log(TiledExample.class.getName(), "Layer: <" + layer.getWidth() + "," + layer.getHeight() + ">");
 		Gdx.app.log(TiledExample.class.getName(), "Camera: <" + camera.position.x + "," + camera.position.y + ">");
 
 		//img = new Texture("badlogic.jpg");
