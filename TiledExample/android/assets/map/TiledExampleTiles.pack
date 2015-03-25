@@ -1,0 +1,159 @@
+
+TiledExampleTiles.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+cityTiles
+  rotate: false
+  xy: 1, 337
+  size: 132, 123
+  orig: 132, 123
+  offset: 0, 0
+  index: 44
+cityTiles
+  rotate: false
+  xy: 1, 219
+  size: 132, 116
+  orig: 132, 116
+  offset: 0, 0
+  index: 65
+cityTiles
+  rotate: false
+  xy: 135, 347
+  size: 132, 113
+  orig: 132, 113
+  offset: 0, 0
+  index: 67
+cityTiles
+  rotate: false
+  xy: 1, 104
+  size: 132, 113
+  orig: 132, 113
+  offset: 0, 0
+  index: 75
+cityTiles
+  rotate: false
+  xy: 269, 359
+  size: 133, 101
+  orig: 133, 101
+  offset: 0, 0
+  index: 55
+cityTiles
+  rotate: false
+  xy: 404, 359
+  size: 133, 101
+  orig: 133, 101
+  offset: 0, 0
+  index: 93
+cityTiles
+  rotate: false
+  xy: 539, 359
+  size: 133, 101
+  orig: 133, 101
+  offset: 0, 0
+  index: 113
+cityTiles
+  rotate: false
+  xy: 135, 244
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 3
+cityTiles
+  rotate: false
+  xy: 1, 1
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 16
+cityTiles
+  rotate: false
+  xy: 269, 256
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 21
+cityTiles
+  rotate: false
+  xy: 674, 359
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 28
+cityTiles
+  rotate: false
+  xy: 135, 141
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 29
+cityTiles
+  rotate: false
+  xy: 269, 153
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 38
+cityTiles
+  rotate: false
+  xy: 403, 256
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 43
+cityTiles
+  rotate: false
+  xy: 808, 359
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 45
+cityTiles
+  rotate: false
+  xy: 135, 38
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 60
+cityTiles
+  rotate: false
+  xy: 269, 50
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 76
+cityTiles
+  rotate: false
+  xy: 403, 153
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 89
+cityTiles
+  rotate: false
+  xy: 537, 256
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 116
+cityTiles
+  rotate: false
+  xy: 403, 50
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 118
+cityTiles
+  rotate: false
+  xy: 537, 153
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 122
+cityTiles
+  rotate: false
+  xy: 671, 256
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: 125

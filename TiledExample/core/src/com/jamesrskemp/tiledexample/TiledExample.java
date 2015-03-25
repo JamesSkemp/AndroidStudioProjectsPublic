@@ -52,7 +52,7 @@ public class TiledExample extends ApplicationAdapter {
 		inputMultiplexer.addProcessor(cameraController);
 		Gdx.input.setInputProcessor(inputMultiplexer);
 
-		map = new TmxMapLoader().load("tiles/SimpleCityTutorialMap.tmx");
+		map = new TmxMapLoader().load("map/SimpleCityTutorialMap.tmx");
 		layer = (TiledMapTileLayer)map.getLayers().get(0);
 
 		//camera.position.set(layer.getWidth() * 128 / 2, layer.getHeight() * 64 / 4, 0);

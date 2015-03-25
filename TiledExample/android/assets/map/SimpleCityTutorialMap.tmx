@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="isometric" renderorder="left-up" width="5" height="5" tilewidth="128" tileheight="64" nextobjectid="1">
+ <properties>
+  <property name="atlas" value="TiledExampleTiles.pack"/>
+ </properties>
+ <tileset firstgid="1" name="City - Roads" tilewidth="133" tileheight="123">
+  <tile id="0">
+   <properties>
+    <property name="exits" value="n,s"/>
+   </properties>
+   <image width="132" height="101" source="cityTiles_003.png"/>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="exits" value="n"/>
+   </properties>
+   <image width="132" height="101" source="cityTiles_021.png"/>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="exits" value="s,w"/>
+   </properties>
+   <image width="132" height="101" source="cityTiles_028.png"/>
+  </tile>
+  <tile id="3">
+   <image width="132" height="101" source="cityTiles_029.png"/>
+  </tile>
+  <tile id="4">
+   <image width="132" height="123" source="cityTiles_044.png"/>
+  </tile>
+  <tile id="5">
+   <image width="133" height="101" source="cityTiles_055.png"/>
+  </tile>
+  <tile id="6">
+   <image width="132" height="116" source="cityTiles_065.png"/>
+  </tile>
+  <tile id="7">
+   <image width="132" height="101" source="cityTiles_089.png"/>
+  </tile>
+  <tile id="8">
+   <image width="133" height="101" source="cityTiles_093.png"/>
+  </tile>
+  <tile id="9">
+   <image width="133" height="101" source="cityTiles_113.png"/>
+  </tile>
+  <tile id="10">
+   <image width="132" height="101" source="cityTiles_116.png"/>
+  </tile>
+  <tile id="11">
+   <image width="132" height="101" source="cityTiles_118.png"/>
+  </tile>
+  <tile id="12">
+   <image width="132" height="101" source="cityTiles_122.png"/>
+  </tile>
+  <tile id="13">
+   <image width="132" height="101" source="cityTiles_125.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="15" name="City - Water" tilewidth="132" tileheight="101">
+  <tile id="0">
+   <properties>
+    <property name="exits" value="n,s"/>
+   </properties>
+   <image width="132" height="101" source="cityTiles_038.png"/>
+  </tile>
+  <tile id="1">
+   <image width="132" height="101" source="cityTiles_043.png"/>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="exits" value="s"/>
+   </properties>
+   <image width="132" height="101" source="cityTiles_045.png"/>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="exits" value="n"/>
+   </properties>
+   <image width="132" height="101" source="cityTiles_060.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="19" name="City - Grass" tilewidth="132" tileheight="113">
+  <tile id="0">
+   <image width="132" height="113" source="cityTiles_067.png"/>
+  </tile>
+  <tile id="1">
+   <image width="132" height="113" source="cityTiles_075.png"/>
+  </tile>
+  <tile id="2">
+   <image width="132" height="101" source="cityTiles_076.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="22" name="City - Lots" tilewidth="132" tileheight="101">
+  <tile id="0">
+   <image width="132" height="101" source="cityTiles_016.png"/>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJwtyDcCgEAMwLDQO0f//1PRkEGDfUbEx8DBQ2FjZOfN19PR0nBxU7FQZ89MrNk/QvABMw==
+  </data>
+ </layer>
+</map>
