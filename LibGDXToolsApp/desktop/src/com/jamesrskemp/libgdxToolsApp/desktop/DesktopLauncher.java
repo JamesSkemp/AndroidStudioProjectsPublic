@@ -11,9 +11,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class DesktopLauncher {
-	public static final String TAG = DesktopLauncher.class.getName();
-
 	public static void main (String[] arg) {
+		TexturePacker.Settings settings = new TexturePacker.Settings();
+		settings.useIndexes = false;
+
+		//TexturePacker.process(settings, "raw", "packed", "tiledexampletiles.atlas");
+
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
 		new LwjglApplication(new LibGDXToolsApp(), config);
